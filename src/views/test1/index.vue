@@ -1,26 +1,19 @@
 <!--
  * @Descripttion: 
  * @Author: Yi Yunwan
- * @Date: 2021-03-10 11:28:58
+ * @Date: 2021-03-11 14:29:20
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 10:10:26
+ * @LastEditTime: 2021-03-11 14:29:21
 -->
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
 export default defineComponent({
-  name: 'App',
+  name: '',
 })
 </script>
 
-<style>
-#app {
-  min-height: 100vh;
-}
-</style>
+<style lang="scss"></style>
