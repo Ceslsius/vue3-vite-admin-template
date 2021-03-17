@@ -1,41 +1,195 @@
+<!--
+ * @Descripttion: 
+ * @Author: Yi Yunwan
+ * @Date: 2021-03-11 11:42:34
+ * @LastEditors: Yi Yunwan
+ * @LastEditTime: 2021-03-16 18:01:20
+-->
 <template>
-  <el-submenu index="2">
-    <template #title>
-      <i class="el-icon-menu"></i>
-      <span>活动列表</span>
+  <div
+    v-if="!item.meta || !item.meta.hidden"
+    :class="[
+      'menu-wrapper',
+      isCollapse ? 'simple-mode' : 'full-mode',
+      { 'first-level': isFirstLevel },
+    ]"
+  >
+    <template v-if="theOnlyOneChild && !theOnlyOneChild.children">
+      <sidebar-item-link
+        v-if="theOnlyOneChild.meta"
+        :to="resolvePath(theOnlyOneChild.path)"
+      >
+        <el-menu-item
+          :index="resolvePath(theOnlyOneChild.path)"
+          :class="{ 'submenu-title-noDropdown': isFirstLevel }"
+        >
+          <i
+            class="submenu-icon"
+            :class="(item.meta && item.meta.icon) || 'el-icon-location'"
+          ></i>
+          <template #title>
+            <span v-if="theOnlyOneChild.meta.title">{{
+              theOnlyOneChild.meta.title
+            }}</span>
+          </template>
+        </el-menu-item>
+      </sidebar-item-link>
     </template>
-    <el-menu-item-group>
-      <el-submenu index="1-4">
-        <template #title>PK排位赛</template>
-        <el-menu-item index="1-4-1">参数配置</el-menu-item>
-        <el-menu-item index="1-4-2">奖励配置</el-menu-item>
-        <el-menu-item index="1-4-3">活动数据</el-menu-item>
-      </el-submenu>
-    </el-menu-item-group>
-  </el-submenu>
+    <el-submenu v-else :index="resolvePath(item.path)" popper-append-to-body>
+      <template #title>
+        <i
+          class="submenu-icon"
+          :class="(item.meta && item.meta.icon) || 'el-icon-location'"
+        ></i>
+        <template v-if="item.meta && item.meta.title">
+          <span>{{ item.meta.title }}</span>
+        </template>
+      </template>
+      <template v-if="item.children">
+        <sidebar-item
+          v-for="child in item.children"
+          :key="child.path"
+          :item="child"
+          :is-collapse="isCollapse"
+          :is-first-level="false"
+          :base-path="resolvePath(child.path)"
+          class="nest-menu"
+        />
+      </template>
+    </el-submenu>
+  </div>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import { useSidebar } from '@/use/useSidebar'
+import { isExternal } from '@/utils/validate'
+import { computed, defineComponent, PropType } from 'vue'
+import { RouteRecordRaw } from 'vue-router'
+import SidebarItemLink from './SidebarItemLink.vue'
+
+export default defineComponent({
+  name: 'SidebarItem',
+  components: {
+    SidebarItemLink,
+  },
+  props: {
+    item: {
+      type: Object as PropType<RouteRecordRaw>,
+      required: true,
+    },
+    isCollapse: {
+      type: Boolean,
+      default: false,
+    },
+    isFirstLevel: {
+      type: Boolean,
+      default: true,
+    },
+    basePath: {
+      type: String,
+      default: '',
+    },
+  },
+  setup(props) {
+    const showingChildNumber = computed(() => {
+      if (props.item.children) {
+        const showingChildren = props.item.children.filter((item) => {
+          if (item.meta?.hidden) {
+            return false
+          } else {
+            return true
+          }
+        })
+        return showingChildren.length
+      }
+      return 0
+    })
+
+    const { isCollapse } = useSidebar()
+
+    const theOnlyOneChild = computed(() => {
+      if (showingChildNumber.value > 1) {
+        return null
+      }
+      if (props.item.children) {
+        for (const child of props.item.children) {
+          const length = child.children?.length
+          if (length && length > 1) {
+            return null
+          }
+          if (!child.meta || !child.meta.hidden) {
+            return child
+          }
+        }
+      }
+      return { ...props.item, path: '' }
+    })
+
+    function resolvePath(routePath: string) {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(props.basePath)) {
+        return props.basePath
+      }
+
+      return `${props.basePath !== '/' ? props.basePath : ''}${
+        routePath && '/'
+      }${routePath}`
+    }
+
     return {
-      isCollapse: true,
+      theOnlyOneChild,
+      resolvePath,
+      isCollapse,
     }
   },
-  methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-  },
-}
+})
 </script>
 
-<style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+<style lang="scss">
+.simple-mode {
+  &.first-level {
+    .submenu-title-noDropdown {
+      padding: 0 !important;
+      position: relative;
+
+      .el-tooltip {
+        padding: 0 !important;
+      }
+    }
+
+    .el-submenu {
+      overflow: hidden;
+
+      & > .el-submenu__title {
+        padding: 0px !important;
+
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+
+        & > span {
+          visibility: hidden;
+        }
+      }
+    }
+  }
+}
+.el-submenu__title i {
+  color: #fff !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.submenu-icon {
+  margin-right: 16px;
+  color: #fff;
+}
+
+.simple-mode {
+  .submenu-icon {
+    margin-left: 20px;
+  }
 }
 </style>

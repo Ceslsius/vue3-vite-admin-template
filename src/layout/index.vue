@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 10:55:58
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 18:22:30
+ * @LastEditTime: 2021-03-14 21:22:25
 -->
 <template>
   <div :class="classObj" class="app-wrapper">
@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { useSidebar } from '@/use/useSidebar'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, watch } from 'vue'
 import { AppMain, Navbar, Sidebar } from './components'
 
 export default defineComponent({
@@ -37,6 +37,10 @@ export default defineComponent({
       }
     })
 
+    watch(sidebar, () => {
+      console.log(sidebar)
+    })
+
     return {
       closeSideBar,
       classObj,
@@ -52,22 +56,77 @@ export default defineComponent({
   position: relative;
   height: 100%;
   width: 100%;
-  display: flex;
-  min-height: 100vh;
+}
+
+.drawer-bg {
+  background: #000;
+  opacity: 0.3;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
 }
 
 .main-container {
-  flex: 1;
-  min-height: 100vh;
-  margin-left: 200px;
+  min-height: 100%;
+  transition: margin-left 0.28s;
+  margin-left: $sideBarWidth;
+  position: relative;
 }
 
 .sidebar-container {
+  transition: width 0.28s;
+  width: $sideBarWidth !important;
+  height: 100%;
   position: fixed;
-  left: 0;
-  bottom: 0;
+  font-size: 0px;
   top: 0;
-  width: 200px;
-  height: 100vh;
+  bottom: 0;
+  left: 0;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.hideSidebar {
+  .main-container {
+    margin-left: 54px;
+  }
+
+  .sidebar-container {
+    width: 54px !important;
+  }
+}
+
+/* for mobile response 适配移动端 */
+.mobile {
+  .main-container {
+    margin-left: 0px;
+  }
+
+  .sidebar-container {
+    transition: transform 0.28s;
+    width: $sideBarWidth !important;
+  }
+
+  &.openSidebar {
+    position: fixed;
+    top: 0;
+  }
+
+  &.hideSidebar {
+    .sidebar-container {
+      pointer-events: none;
+      transition-duration: 0.3s;
+      transform: translate3d(-$sideBarWidth, 0, 0);
+    }
+  }
+}
+
+.withoutAnimation {
+  .main-container,
+  .sidebar-container {
+    transition: none;
+  }
 }
 </style>

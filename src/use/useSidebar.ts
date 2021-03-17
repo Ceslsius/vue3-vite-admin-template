@@ -3,11 +3,11 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:16:20
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 11:38:59
+ * @LastEditTime: 2021-03-14 21:04:38
  */
 
-import { reactive } from '@vue/reactivity'
 import { getSidebarStatus, setSidebarStatus } from '@/utils/cookies'
+import { computed, reactive } from 'vue'
 
 const sidebar = reactive({
   opened: getSidebarStatus() !== 'closed',
@@ -31,8 +31,12 @@ function closeSideBar(withoutAnimation: boolean) {
 }
 
 export function useSidebar() {
+  const isCollapse = computed(() => {
+    return !sidebar.opened
+  })
   return {
     sidebar,
+    isCollapse,
     setSidebar,
     closeSideBar,
   }

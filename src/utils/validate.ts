@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:57:28
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 09:58:00
+ * @LastEditTime: 2021-03-16 14:12:21
  */
 /**
  * Created by PanJiaChen on 16/11/18.
@@ -91,4 +91,8 @@ export function isArray(arg: Array<any>): boolean {
     return Object.prototype.toString.call(arg) === '[object Array]'
   }
   return Array.isArray(arg)
+}
+
+export function isInt(value: number) {
+  return Math.round(value) === value
 }

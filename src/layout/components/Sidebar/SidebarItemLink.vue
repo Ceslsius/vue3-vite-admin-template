@@ -3,14 +3,17 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 12:07:26
+ * @LastEditTime: 2021-03-14 22:33:46
 -->
 <template>
   <a v-if="isExternal(to)" :href="to" target="_blank" rel="noopener">
     <slot />
   </a>
-  <router-link v-else :to="to">
-    <slot />
+
+  <router-link v-else v-bind="$props" custom v-slot="{ navigate }">
+    <div v-bind="$attrs" @click="navigate">
+      <slot />
+    </div>
   </router-link>
 </template>
 

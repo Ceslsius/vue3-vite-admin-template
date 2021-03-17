@@ -3,11 +3,11 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 12:09:07
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 14:17:55
+ * @LastEditTime: 2021-03-11 19:44:24
 -->
 <template>
   <div :class="[{ 'is-active': isActive }]" @click="toggleClick">
-    <!-- <svg-icon name="hamburger" width="20" height="20" /> -->
+    <div class="el-icon-s-unfold"></div>
   </div>
 </template>
 

@@ -3,15 +3,13 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-11 18:14:17
+ * @LastEditTime: 2021-03-14 23:38:07
 -->
 <template>
   <section class="app-main">
     <router-view v-slot="{ Component }">
-      <transition>
-        <keep-alive>
-          <component :is="Component" />
-        </keep-alive>
+      <transition name="fade-transform" mode="out-in">
+        <component :is="Component" />
       </transition>
     </router-view>
   </section>
@@ -22,6 +20,6 @@
 <style lang="scss" scoped>
 .app-main {
   overflow: hidden;
-  padding: 25px;
+  padding: 15px;
 }
 </style>

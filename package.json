@@ -7,8 +7,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.33",
     "js-cookie": "^2.2.1",
+    "js-md5": "^0.7.3",
     "normalize.css": "^8.0.1",
     "path-to-regexp": "^6.2.0",
     "vue": "^3.0.5",
@@ -18,12 +20,14 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.2",
     "@types/js-cookie": "^2.2.6",
+    "@types/js-md5": "^0.4.2",
     "@types/node": "^14.14.33",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.5",
     "babel-plugin-import": "^1.13.3",
+    "element-theme-chalk": "^2.15.1",
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
