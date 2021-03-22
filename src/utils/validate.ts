@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:57:28
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 14:12:21
+ * @LastEditTime: 2021-03-19 15:42:33
  */
 /**
  * Created by PanJiaChen on 16/11/18.
@@ -94,5 +94,7 @@ export function isArray(arg: Array<any>): boolean {
 }
 
 export function isInt(value: number) {
+  console.log(typeof Math.round(value))
+
   return Math.round(value) === value
 }

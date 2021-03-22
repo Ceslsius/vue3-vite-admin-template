@@ -3,10 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 15:00:15
+ * @LastEditTime: 2021-03-19 15:22:55
 -->
 <template>
-  <div style="width: 40%; min-width: 400px">
+  <el-dialog title="收货地址" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="活动编号" prop="code">
         <el-input v-model="form.code" placeholder="请输入活动编号"></el-input>
@@ -39,31 +39,31 @@
           <el-option label="PK排位赛" value="pk_rank"> </el-option>
         </el-select>
       </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" :loading="btnLoading" @click="onSubmit">
-          保存
-        </el-button>
-        <el-button>取消</el-button>
-        <span class="form-item-tips">
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <span class="form-item-tips ml-15">
           <i class="el-icon-info"></i>
           同一活动结束时间后可再次添加
         </span>
-      </el-form-item>
-    </el-form>
-  </div>
+        <el-button @click="close">取 消</el-button>
+        <el-button type="primary" :loading="btnLoading" @click="onSubmit">
+          保存
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
-import { ElFormItemContext } from 'element-plus/lib/el-form'
 import { defineComponent, reactive, ref } from 'vue'
-import { addActivity } from './api'
-import type { ActivityAddData } from './interface'
+import { addActivity } from '../api'
+import type { ActivityAddData } from '../interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
 
 export default defineComponent({
-  name: '',
+  name: 'AddActivity',
   data() {
     return {
       rules: {
@@ -87,7 +87,7 @@ export default defineComponent({
       },
     }
   },
-  setup() {
+  setup(props, ctx) {
     const form = reactive<ActivityAddData>({
       name: '',
       act_type: '',
@@ -96,9 +96,18 @@ export default defineComponent({
       end_time: '',
     })
 
+    const addActivityVisible = ref(false)
+    function open() {
+      addActivityVisible.value = true
+    }
+    function close() {
+      addActivityVisible.value = false
+    }
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const { msg } = await addActivity(form)
       ElMessage.success(msg)
+      ctx.emit('finished')
+      close()
     })
 
     return {
@@ -106,6 +115,9 @@ export default defineComponent({
       onSubmit,
       formRef,
       btnLoading,
+      addActivityVisible,
+      open,
+      close,
     }
   },
 })

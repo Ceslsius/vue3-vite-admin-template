@@ -3,20 +3,24 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:39:03
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 16:38:33
+ * @LastEditTime: 2021-03-19 18:03:30
 -->
 <template>
   <el-tabs v-model="activeName">
-    <el-tab-pane label="基本配置" name="BaseConfig">
+    <el-tab-pane label="基本配置" name="BaseConfig" :lazy="true">
       <BaseConfig></BaseConfig>
     </el-tab-pane>
-    <el-tab-pane label="积分参数" name="IntegrationParameters">
+    <el-tab-pane label="积分参数" name="IntegrationParameters" :lazy="true">
       <IntegrationParameters></IntegrationParameters>
     </el-tab-pane>
-    <el-tab-pane label="段位配置" name="RankConfig">
+    <el-tab-pane label="段位配置" name="RankConfig" :lazy="true">
       <RankConfig></RankConfig>
     </el-tab-pane>
-    <el-tab-pane label="贡献积分参数" name="ContributionIntegralParameter">
+    <el-tab-pane
+      label="贡献积分参数"
+      name="ContributionIntegralParameter"
+      :lazy="true"
+    >
       <ContributionIntegralParameter></ContributionIntegralParameter>
     </el-tab-pane>
   </el-tabs>

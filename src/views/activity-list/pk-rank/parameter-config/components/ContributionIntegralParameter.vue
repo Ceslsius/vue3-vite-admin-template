@@ -3,14 +3,22 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 16:13:32
+ * @LastEditTime: 2021-03-22 10:04:22
 -->
 <template>
   <div>
     <el-form ref="formRef" :model="form" label-width="80px">
       <el-row type="flex">
         <el-col :span="8">
-          <el-form-item label="常规比例">
+          <el-form-item
+            label="常规比例"
+            :rules="{
+              required: true,
+              message: `请输入常规比例`,
+              trigger: 'blur',
+            }"
+            prop="regular_ratio"
+          >
             <el-input
               v-model="form.regular_ratio"
               placeholder="请输入常规比例"
@@ -24,9 +32,21 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" v-for="(item, index) in list" :key="item.key">
+      <el-row
+        type="flex"
+        v-for="(item, index) in form.special_gift"
+        :key="item.key"
+      >
         <el-col :span="8">
-          <el-form-item label="特殊礼物">
+          <el-form-item
+            label="特殊礼物"
+            :rules="{
+              required: true,
+              message: `请选择礼物`,
+              trigger: 'change',
+            }"
+            :prop="`special_gift[${index}].giftid`"
+          >
             <el-select
               placeholder="请选择礼物"
               style="width: 100%"
@@ -43,7 +63,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="贡献积分">
+          <el-form-item
+            label="贡献积分"
+            :rules="{
+              required: true,
+              message: `请输入贡献积分`,
+              trigger: 'change',
+            }"
+            :prop="`special_gift[${index}].integral`"
+          >
             <el-input v-model="item.integral"></el-input>
           </el-form-item>
         </el-col>
@@ -54,14 +82,14 @@
               type="danger"
               icon="el-icon-minus"
               circle
-              v-if="list.length > 1"
+              v-if="form.special_gift.length > 1"
               @click="delList(index)"
             ></el-button>
             <el-button
               class="ml-15"
               type="primary"
               icon="el-icon-plus"
-              v-if="list.length === index + 1"
+              v-if="form.special_gift.length === index + 1"
               circle
               @click="addList"
             ></el-button>
@@ -84,27 +112,33 @@
 import { useDynamicForm } from '@/use/useDynamicForm'
 import { useForm } from '@/use/useForm'
 import { useGiftList } from '@/use/useGiftList'
+import { useFormCache } from '@/use/useFormCache'
 import { ElMessage } from 'element-plus'
 import { defineComponent, reactive } from 'vue'
+import { setPkContributionConfig } from '../../api'
 
 const baseInfo = { giftid: '', integral: 0 }
 const min = '<'
 
 export default defineComponent({
   name: '',
-  setup(props) {
+  setup() {
     const { list, addList, delList } = useDynamicForm(baseInfo, {})
     const form = reactive({
       regular_ratio: 0,
       special_gift: list,
     })
+    const { clearFormCache } = useFormCache(form, {
+      key: 'PkContributionConfig',
+    })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      ElMessage.success('msg')
+      const { msg } = await setPkContributionConfig(form as any)
+      ElMessage.success(msg)
+      clearFormCache()
     })
     const { giftList } = useGiftList()
 
     return {
-      list,
       addList,
       delList,
       formRef,

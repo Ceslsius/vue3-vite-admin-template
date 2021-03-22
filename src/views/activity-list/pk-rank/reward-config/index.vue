@@ -3,7 +3,7 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-17 10:47:24
+ * @LastEditTime: 2021-03-19 18:22:24
 -->
 <template>
   <div>
@@ -27,37 +27,7 @@
                 trigger: 'blur',
               }"
             >
-              <el-upload
-                action="#"
-                :before-upload="anchorUploadMap[key].avatar.beforeUpload"
-                :show-file-list="false"
-                v-if="!pkAnchorRewarConfig[key].avatar.url"
-              >
-                <el-button
-                  size="small"
-                  type="primary"
-                  icon="el-icon-upload"
-                  :loading="anchorUploadMap[key].avatar.loading"
-                >
-                  点击上传
-                </el-button>
-              </el-upload>
-              <div class="flex" v-else>
-                <el-image
-                  class="rank-image"
-                  :src="pkAnchorRewarConfig[key].avatar.url"
-                  fit="contain"
-                  :preview-src-list="[pkAnchorRewarConfig[key].avatar.url]"
-                ></el-image>
-                <span>
-                  <el-button
-                    class="ml-5"
-                    type="danger"
-                    icon="el-icon-delete"
-                    circle
-                  ></el-button>
-                </span>
-              </div>
+              <ImageUpload v-model:url="pkAnchorRewarConfig[key].avatar.url" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -91,9 +61,9 @@
                 trigger: 'blur',
               }"
             >
-              <el-upload>
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
+              <ImageUpload
+                v-model:url="pkAnchorRewarConfig[key].live_label.url"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -202,9 +172,7 @@
                 trigger: 'blur',
               }"
             >
-              <el-upload>
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
+              <ImageUpload v-model:url="pkUserRewarConfig[key].avatar.url" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -216,7 +184,7 @@
               <el-input
                 type="number"
                 placeholder="请输入使用时长"
-                v-model="pkUserRewarConfig[key].avatar.time"
+                v-model.number="pkUserRewarConfig[key].avatar.time"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -260,7 +228,7 @@
             >
               <el-input
                 type="number"
-                v-model="pkUserRewarConfig[key].gift.time"
+                v-model.number="pkUserRewarConfig[key].gift.time"
                 placeholder="请输入使用时长（1-1000正整数）"
               ></el-input>
             </el-form-item>
@@ -295,16 +263,15 @@ import { useGiftList } from '@/use/useGiftList'
 import { isInt } from '@/utils/validate'
 import { ElMessage } from 'element-plus'
 import { defineComponent, reactive, Ref } from 'vue'
-import { setPkRankConfig } from '../api'
-import { numberCheck } from '@/utils/check'
 import {
-  PkAnchorRewarConfig,
-  PkAnchorRewarConfigInfo,
-  PkUserRewarConfig,
-  PkUserRewarConfigInfo,
-  RankConfigInfo,
-} from '../intrface'
-import { UploadFileRes, useUploadFile } from '@/use/useUploadFile'
+  setPkAnchorRewarConfig,
+  setPkRankConfig,
+  setPkUserRewarConfig,
+} from '../api'
+import { numberCheck } from '@/utils/check'
+import { PkAnchorRewarConfigInfo, PkUserRewarConfigInfo } from '../intrface'
+import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
+import { useFormCache } from '@/use/useFormCache'
 
 const labelMap: Record<string, string> = {
   first: '第一名',
@@ -328,43 +295,14 @@ function usePkAnchorRewarConfig() {
   const { config: pkAnchorRewarConfig } = useConfig<PkAnchorRewarConfigInfo>({
     avatar: {
       url: '',
+      name: '',
     },
     live_label: {
       url: '',
     },
   })
-  const anchorUploadMap = reactive<
-    Record<
-      string,
-      {
-        avatar: UploadFileRes
-        live_label: UploadFileRes
-      }
-    >
-  >({})
-  labelKeys.forEach((item) => {
-    const { loading, beforeUpload } = useUploadFile((value) => {
-      pkAnchorRewarConfig[item].avatar.url = value
-    })
-    const { loading: loading1, beforeUpload: beforeUpload1 } = useUploadFile(
-      (value) => {
-        pkAnchorRewarConfig[item].live_label.url = value
-      }
-    )
-    anchorUploadMap[item] = {
-      avatar: {
-        loading,
-        beforeUpload,
-      },
-      live_label: {
-        loading: loading1,
-        beforeUpload: beforeUpload1,
-      },
-    } as any
-  })
   return {
     pkAnchorRewarConfig,
-    anchorUploadMap,
   }
 }
 
@@ -372,28 +310,21 @@ function usePkUserRewarConfig() {
   const { config: pkUserRewarConfig } = useConfig<PkUserRewarConfigInfo>({
     avatar: {
       url: '',
+      name: '',
     },
     gift: {},
   })
 
-  const userUploadMap = reactive<Record<string, UploadFileRes>>({})
-  labelKeys.forEach((item) => {
-    const { loading, beforeUpload } = useUploadFile((value) => {
-      pkUserRewarConfig[item].avatar.url = value
-    })
-    userUploadMap[item] = {
-      loading,
-      beforeUpload,
-    } as any
-  })
   return {
     pkUserRewarConfig,
-    userUploadMap,
   }
 }
 
 export default defineComponent({
   name: '',
+  components: {
+    ImageUpload,
+  },
   data() {
     return {
       useTimeRules: [
@@ -414,29 +345,33 @@ export default defineComponent({
     }
   },
   setup() {
-    const { pkAnchorRewarConfig, anchorUploadMap } = usePkAnchorRewarConfig()
-    const { pkUserRewarConfig, userUploadMap } = usePkUserRewarConfig()
+    const { pkAnchorRewarConfig } = usePkAnchorRewarConfig()
+    const { pkUserRewarConfig } = usePkUserRewarConfig()
     const form = reactive({
       pkAnchorRewarConfig,
       pkUserRewarConfig,
     })
-    const { giftList } = useGiftList()
-    function delImage(key: string, type?: string) {
-      if (type) {
-      } else {
+    const { clearFormCache } = useFormCache(
+      [pkAnchorRewarConfig, pkUserRewarConfig],
+      {
+        key: 'pkAnchorRewarConfig-pkUserRewarConfig',
       }
-    }
-
+    )
+    const { giftList } = useGiftList()
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      ElMessage.success('msg')
+      const [{ msg }] = await Promise.all([
+        setPkAnchorRewarConfig(pkAnchorRewarConfig as any),
+        setPkUserRewarConfig(pkUserRewarConfig as any),
+      ])
+      ElMessage.success(msg)
+      clearFormCache()
     })
+
     return {
       formRef,
       onSubmit,
       pkAnchorRewarConfig,
-      anchorUploadMap,
       pkUserRewarConfig,
-      userUploadMap,
       btnLoading,
       labelMap,
       form,

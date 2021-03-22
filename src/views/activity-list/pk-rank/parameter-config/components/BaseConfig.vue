@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 14:31:58
+ * @LastEditTime: 2021-03-19 18:24:13
 -->
 <template>
   <div style="">
@@ -177,6 +177,7 @@ import { defineComponent, reactive } from 'vue'
 import { setPkBaseConfig } from '../../api'
 import type { PkBaseCofigData } from '../../intrface'
 import { isInt } from '@/utils/validate'
+import { useFormCache } from '@/use/useFormCache'
 
 interface CustomFormData extends PkBaseCofigData {
   winningStreakList: { value: string; key: number }[]
@@ -272,6 +273,10 @@ export default defineComponent({
       singleGameList,
     })
 
+    const { clearFormCache } = useFormCache(form, {
+      key: 'PkBaseConfig',
+    })
+
     const { btnLoading, formRef, onSubmit } = useForm(async () => {
       form.winning_streak = winningStreakList.map((item) => {
         const temp = item.value.split(',')
@@ -295,6 +300,7 @@ export default defineComponent({
         single_game,
       })
       ElMessage.success(msg)
+      clearFormCache()
     })
 
     return {

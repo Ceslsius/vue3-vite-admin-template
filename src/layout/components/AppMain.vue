@@ -3,14 +3,12 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-14 23:38:07
+ * @LastEditTime: 2021-03-19 14:58:10
 -->
 <template>
   <section class="app-main">
     <router-view v-slot="{ Component }">
-      <transition name="fade-transform" mode="out-in">
-        <component :is="Component" />
-      </transition>
+      <component :is="Component" />
     </router-view>
   </section>
 </template>

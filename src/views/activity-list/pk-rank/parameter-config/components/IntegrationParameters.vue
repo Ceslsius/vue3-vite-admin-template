@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 15:45:10
+ * @LastEditTime: 2021-03-19 18:19:33
 -->
 <template>
   <div>
@@ -49,6 +49,7 @@
 
 <script lang="ts">
 import { useForm } from '@/use/useForm'
+import { useFormCache } from '@/use/useFormCache'
 import { isInt } from '@/utils/validate'
 import { ElMessage } from 'element-plus'
 import { defineComponent, reactive, ref, watch } from 'vue'
@@ -96,9 +97,14 @@ export default defineComponent({
       low_equal: undefined,
     })
 
+    const { clearFormCache } = useFormCache(form, {
+      key: 'PkIntegralConfig',
+    })
+
     const { btnLoading, formRef, onSubmit } = useForm(async () => {
       const { msg } = await setPkIntegralConfig(form as any)
       ElMessage.success(msg)
+      clearFormCache()
     })
 
     watch(

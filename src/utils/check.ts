@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-16 20:48:40
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 20:53:26
+ * @LastEditTime: 2021-03-19 15:44:11
  */
 
 import { isInt } from './validate'
@@ -20,11 +20,13 @@ export function numberCheck(
   value: number,
   callback: (error?: Error) => void
 ) {
-  if (value < 1 || value > 1000) {
+  if (value < rule.min || value > rule.max) {
     return callback(
       new Error(rule.message || `请输入${rule.min}-${rule.max}的数`)
     )
   }
+  console.log(typeof value)
+
   if (rule.isInt && !isInt(value)) {
     return callback(new Error(rule.message || '请输入整数'))
   }

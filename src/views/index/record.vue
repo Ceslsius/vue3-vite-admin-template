@@ -3,31 +3,36 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 18:20:03
+ * @LastEditTime: 2021-03-19 15:24:34
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
-    <el-form-item label="活动时间">
-      <el-col :span="11">
-        <el-date-picker
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          v-model="timeValue"
-        >
-        </el-date-picker>
-      </el-col>
-    </el-form-item>
-    <el-form-item label="关键字">
-      <el-input placeholder="关键字"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit">搜索</el-button>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary">导出</el-button>
-    </el-form-item>
+    <el-row type="flex" justify="space-between">
+      <div>
+        <el-form-item label="活动时间">
+          <el-date-picker
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            v-model="timeValue"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="关键字">
+          <el-input placeholder="关键字"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary">导出</el-button>
+        </el-form-item>
+      </div>
+      <el-form-item>
+        <el-button type="primary" @click="toAddActivity">添加活动</el-button>
+      </el-form-item>
+    </el-row>
   </el-form>
 
   <el-table :data="list.value" class="mt-15" height="70vh" style="width: 100%">
@@ -67,6 +72,7 @@
       </el-pagination>
     </div>
   </el-row>
+  <AddActivity ref="addActivityRef" @finished="onSubmit" />
 </template>
 <script lang="ts">
 import { useForm } from '@/use/useForm'
@@ -74,8 +80,13 @@ import { useTable } from '@/use/useTable'
 import { defineComponent, reactive, ref } from 'vue'
 import { getActivityList } from './api'
 import { ActivityInfo } from './interface'
+import AddActivity from './components/AddActivity.vue'
+
 export default defineComponent({
   name: '',
+  components: {
+    AddActivity,
+  },
   data() {
     return {}
   },
@@ -96,6 +107,12 @@ export default defineComponent({
 
     function updateActivity(info: ActivityInfo) {}
 
+    const addActivityRef = ref<typeof AddActivity>()
+
+    function toAddActivity() {
+      addActivityRef.value?.open()
+    }
+
     return {
       list,
       total,
@@ -106,6 +123,9 @@ export default defineComponent({
       timeValue,
       updateActivity,
       sizeChange,
+      addActivityRef,
+      toAddActivity,
+      search,
     }
   },
 })

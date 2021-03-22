@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-12-03 16:29:15
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 14:36:08
+ * @LastEditTime: 2021-03-19 17:43:45
  */
 declare interface Window {
   _hmt: any
@@ -87,3 +87,4 @@ type CallHandler = (
   data: any,
   responseCallback: ResponseCallback
 ) => void
+type MayNull<T> = T | null
