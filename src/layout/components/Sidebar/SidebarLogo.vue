@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-14 23:05:19
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 19:53:56
+ * @LastEditTime: 2021-03-22 10:24:27
 -->
 <template>
   <div class="sidebar-logo-container" :class="{ collapse: collapse }">
@@ -14,10 +14,10 @@
         class="sidebar-logo-link"
         to="/"
       >
-        <img src="favicon.ico" class="sidebar-logo" />
+        <img src="/public/favicon.ico" class="sidebar-logo" />
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img src="favicon.ico" class="sidebar-logo" />
+        <img src="/public/favicon.ico" class="sidebar-logo" />
         <h1 class="sidebar-title">
           {{ title }}
         </h1>
