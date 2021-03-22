@@ -3,11 +3,11 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-19 17:38:55
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 18:30:46
+ * @LastEditTime: 2021-03-22 14:35:30
  */
 
 import { adminStorage } from '@/utils'
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { isProxy, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElMessageBox } from 'element-plus'
 export function useFormCache(
   target: object | object[],
@@ -15,7 +15,6 @@ export function useFormCache(
     key: string
     message?: string
     title?: string
-    baseIsArray?: boolean
     onRecovery?: (target: object | object[]) => void
   }
 ) {
@@ -41,7 +40,7 @@ export function useFormCache(
         options.title || '上次编辑未保存'
       )
         .then((value) => {
-          if (Array.isArray(target) && !options.baseIsArray) {
+          if (Array.isArray(target) && !isProxy(target)) {
             target.forEach((item, index) => {
               Object.assign(item, temp[index])
             })

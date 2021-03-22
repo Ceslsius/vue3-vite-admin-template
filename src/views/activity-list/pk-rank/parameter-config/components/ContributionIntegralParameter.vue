@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 10:04:22
+ * @LastEditTime: 2021-03-22 14:33:07
 -->
 <template>
   <div>
@@ -130,6 +130,9 @@ export default defineComponent({
     })
     const { clearFormCache } = useFormCache(form, {
       key: 'PkContributionConfig',
+      onRecovery() {
+        form.special_gift = Object.assign(list, form.special_gift)
+      },
     })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const { msg } = await setPkContributionConfig(form as any)

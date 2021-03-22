@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 09:44:58
+ * @LastEditTime: 2021-03-22 14:35:43
 -->
 <template>
   <div>
@@ -207,7 +207,6 @@ export default defineComponent({
     }
     const { clearFormCache } = useFormCache(rankArr, {
       key: 'PkRankConfig',
-      baseIsArray: true,
     })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const rank = JSON.parse(JSON.stringify(rankArr)) as Array<any>

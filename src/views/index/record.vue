@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 15:24:34
+ * @LastEditTime: 2021-03-22 15:50:02
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -20,7 +20,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="关键字"></el-input>
+          <el-input placeholder="关键字" v-model="form.keyword"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -50,7 +50,7 @@
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
-        <el-button type="text" @click="updateActivity(scope.row)">
+        <el-button type="text" @click="toUpdateActivity(scope.row)">
           修改
         </el-button>
       </template>
@@ -73,27 +73,52 @@
     </div>
   </el-row>
   <AddActivity ref="addActivityRef" @finished="onSubmit" />
+  <UpdateActivity
+    ref="updateActivityRef"
+    :info="updateForm"
+    @finished="onSubmit"
+  />
 </template>
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import { getActivityList } from './api'
 import { ActivityInfo } from './interface'
 import AddActivity from './components/AddActivity.vue'
-
+import UpdateActivity from './components/UpdateActivity.vue'
 export default defineComponent({
-  name: '',
+  name: 'record',
   components: {
     AddActivity,
+    UpdateActivity,
   },
   data() {
     return {}
   },
   setup() {
-    const form = reactive({})
-    const timeValue = ref([])
-    const state = reactive({})
+    const form = reactive({
+      keyword: '',
+      start_time: '' as any,
+      end_time: '' as any,
+    })
+
+    const timeValue = ref<Date[]>([])
+    watch(
+      timeValue,
+      () => {
+        if (!timeValue.value) {
+          form.start_time = undefined
+          form.end_time = undefined
+          return
+        }
+        form.start_time = timeValue.value[0]
+        form.end_time = timeValue.value[1]
+      },
+      {
+        deep: true,
+      }
+    )
 
     const {
       list,
@@ -105,7 +130,13 @@ export default defineComponent({
     } = useTable(form, getActivityList)
     const { onSubmit, btnLoading } = useForm(search)
 
-    function updateActivity(info: ActivityInfo) {}
+    const updateForm = reactive<Partial<ActivityInfo>>({})
+    const updateActivityRef = ref<typeof UpdateActivity>()
+
+    function toUpdateActivity(info: ActivityInfo) {
+      Object.assign(updateForm, info)
+      updateActivityRef.value?.open()
+    }
 
     const addActivityRef = ref<typeof AddActivity>()
 
@@ -121,11 +152,14 @@ export default defineComponent({
       onSubmit,
       btnLoading,
       timeValue,
-      updateActivity,
+      toUpdateActivity,
       sizeChange,
       addActivityRef,
       toAddActivity,
       search,
+      form,
+      updateActivityRef,
+      updateForm,
     }
   },
 })

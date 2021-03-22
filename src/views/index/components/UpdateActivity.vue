@@ -3,10 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 15:44:14
+ * @LastEditTime: 2021-03-22 16:41:23
 -->
 <template>
-  <el-dialog title="添加活动" v-model="addActivityVisible">
+  <el-dialog title="修改活动信息" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="活动编号" prop="code">
         <el-input v-model="form.code" placeholder="请输入活动编号"></el-input>
@@ -56,14 +56,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
-import { addActivity } from '../api'
-import type { ActivityAddData } from '../interface'
+import { defineComponent, PropType, reactive, ref } from 'vue'
+import type { ActivityAddData, ActivityInfo } from '../interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
+import { updateActivity } from '../api'
 
 export default defineComponent({
-  name: 'AddActivity',
+  name: 'UpdateActivity',
   data() {
     return {
       rules: {
@@ -87,24 +87,29 @@ export default defineComponent({
       },
     }
   },
+  props: {
+    info: {
+      type: Object as PropType<ActivityInfo>,
+      default: () => {
+        return {}
+      },
+    },
+  },
+  emits: ['finished'],
   setup(props, ctx) {
-    const form = reactive<ActivityAddData>({
-      name: '',
-      act_type: '',
-      code: '',
-      start_time: '',
-      end_time: '',
-    })
+    const form = reactive<ActivityInfo>(props.info)
 
     const addActivityVisible = ref(false)
     function open() {
+      Object.assign(form, props.info)
+      console.log(form)
       addActivityVisible.value = true
     }
     function close() {
       addActivityVisible.value = false
     }
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await addActivity(form)
+      const { msg } = await updateActivity(form)
       ElMessage.success(msg)
       ctx.emit('finished')
       close()

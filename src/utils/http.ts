@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-09-04 17:13:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 15:12:42
+ * @LastEditTime: 2021-03-22 14:02:58
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { apiMock, baseURL, mockBaseURL, SECRET_KEY } from '@/config'
@@ -28,7 +28,7 @@ function _log(response: AxiosResponse<any>) {
       } catch (error) {
         console.log('请求参数：', data)
       }
-    } else {
+    } else if (data) {
       console.log('请求参数：', data)
     }
     if (typeof params === 'string') {
@@ -38,7 +38,7 @@ function _log(response: AxiosResponse<any>) {
       } catch (error) {
         console.log('请求参数：', params)
       }
-    } else {
+    } else if (params) {
       console.log('请求参数：', params)
     }
     console.log('响应结果：', response.data)

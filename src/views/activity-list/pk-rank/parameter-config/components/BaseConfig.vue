@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 18:24:13
+ * @LastEditTime: 2021-03-22 14:34:12
 -->
 <template>
   <div style="">
@@ -275,6 +275,13 @@ export default defineComponent({
 
     const { clearFormCache } = useFormCache(form, {
       key: 'PkBaseConfig',
+      onRecovery() {
+        form.winningStreakList = Object.assign(
+          winningStreakList,
+          form.winningStreakList
+        )
+        form.singleGameList = Object.assign(singleGameList, form.singleGameList)
+      },
     })
 
     const { btnLoading, formRef, onSubmit } = useForm(async () => {

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 12:29:53
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 17:38:47
+ * @LastEditTime: 2021-03-22 16:37:54
  */
 
 import { service } from '@/utils/http'
@@ -23,4 +23,8 @@ export function getActivityList(params: any): ListRes<ActivityInfo> {
   return service.get('/backend/activity/list', {
     params,
   })
+}
+
+export function updateActivity(data: ActivityInfo): Res {
+  return service.post('/backend/activity/update', data)
 }
