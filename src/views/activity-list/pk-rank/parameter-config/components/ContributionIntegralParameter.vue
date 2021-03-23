@@ -3,24 +3,33 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 14:33:07
+ * @LastEditTime: 2021-03-22 18:37:49
 -->
 <template>
   <div>
-    <el-form ref="formRef" :model="form" label-width="80px">
+    <el-form ref="formRef" :model="form" label-width="90px">
       <el-row type="flex">
         <el-col :span="8">
           <el-form-item
             label="常规比例"
-            :rules="{
-              required: true,
-              message: `请输入常规比例`,
-              trigger: 'blur',
-            }"
+            :rules="[
+              {
+                required: true,
+                message: `请输入常规比例`,
+                trigger: 'blur',
+              },
+              {
+                validator: numberCheck,
+                trigger: 'blur',
+                min: 1,
+                max: 100,
+                isInt: true,
+              },
+            ]"
             prop="regular_ratio"
           >
             <el-input
-              v-model="form.regular_ratio"
+              v-model.number="form.regular_ratio"
               placeholder="请输入常规比例"
             ></el-input>
           </el-form-item>
@@ -28,7 +37,7 @@
         <el-col :span="16">
           <div class="form-item-tips">
             <i class="el-icon-info"></i>
-            常规比例=T钻值:贡献积分，0 {{ min }} 常规比例 ≤1
+            常规比例=贡献积分:T钻值，1 {{ min }} 常规比例 ≤100
           </div>
         </el-col>
       </el-row>
@@ -65,14 +74,26 @@
         <el-col :span="8">
           <el-form-item
             label="贡献积分"
-            :rules="{
-              required: true,
-              message: `请输入贡献积分`,
-              trigger: 'change',
-            }"
+            :rules="[
+              {
+                required: true,
+                message: `请输入贡献积分`,
+                trigger: 'change',
+              },
+              {
+                validator: numberCheck,
+                trigger: 'blur',
+                min: 1,
+                max: 100000,
+                isInt: true,
+              },
+            ]"
             :prop="`special_gift[${index}].integral`"
           >
-            <el-input v-model="item.integral"></el-input>
+            <el-input
+              v-model.number="item.integral"
+              placeholder="请输入贡献积分"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -114,24 +135,44 @@ import { useForm } from '@/use/useForm'
 import { useGiftList } from '@/use/useGiftList'
 import { useFormCache } from '@/use/useFormCache'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, nextTick, reactive } from 'vue'
 import { setPkContributionConfig } from '../../api'
+import { numberCheck } from '@/utils/check'
+import { usePkRankSetting } from '../../use/usePkRankSetting'
 
-const baseInfo = { giftid: '', integral: 0 }
+const baseInfo = { giftid: '', integral: undefined }
 const min = '<'
 
 export default defineComponent({
   name: '',
   setup() {
+    const { contributionConfig } = usePkRankSetting(async () => {
+      if (Object.keys(contributionConfig).length) {
+        canCache.value = false
+        Object.assign(form, JSON.parse(JSON.stringify(contributionConfig)))
+        form.special_gift = Object.assign(list, form.special_gift)
+        await nextTick()
+        canCache.value = true
+      }
+    })
     const { list, addList, delList } = useDynamicForm(baseInfo, {})
+
     const form = reactive({
-      regular_ratio: 0,
+      regular_ratio: undefined,
       special_gift: list,
     })
-    const { clearFormCache } = useFormCache(form, {
+
+    if (Object.keys(contributionConfig).length) {
+      Object.assign(form, JSON.parse(JSON.stringify(contributionConfig)))
+      form.special_gift = Object.assign(list, form.special_gift)
+    }
+    const { clearFormCache, canCache } = useFormCache(form, {
       key: 'PkContributionConfig',
-      onRecovery() {
+      async onRecovery() {
+        canCache.value = false
         form.special_gift = Object.assign(list, form.special_gift)
+        await nextTick()
+        canCache.value = true
       },
     })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
@@ -150,6 +191,7 @@ export default defineComponent({
       form,
       giftList,
       min,
+      numberCheck,
     }
   },
 })

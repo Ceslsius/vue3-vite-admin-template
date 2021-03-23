@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 14:35:43
+ * @LastEditTime: 2021-03-22 18:12:41
 -->
 <template>
   <div>
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div>
-    <el-form ref="formRef" :model="rankArr" label-width="80px">
+    <el-form ref="formRef" :model="rankArr" label-width="90px">
       <el-row type="flex" v-for="(item, index) in rankArr" :key="item.key">
         <el-col :span="5">
           <el-form-item
@@ -86,38 +86,7 @@
             }"
             :prop="`[${index}].url`"
           >
-            <el-upload
-              action="#"
-              :before-upload="uploadList[index].beforeUpload"
-              :show-file-list="false"
-              v-if="!item.url"
-            >
-              <el-button
-                size="small"
-                type="primary"
-                icon="el-icon-upload"
-                :loading="uploadList[index].loading"
-              >
-                点击上传
-              </el-button>
-            </el-upload>
-            <div class="flex" v-else>
-              <el-image
-                class="rank-image"
-                :src="item.url"
-                fit="contain"
-                :preview-src-list="[item.url]"
-              ></el-image>
-              <span>
-                <el-button
-                  class="ml-5"
-                  type="danger"
-                  icon="el-icon-delete"
-                  @click="delImage(index)"
-                  circle
-                ></el-button>
-              </span>
-            </div>
+            <ImageUpload v-model:url="rankArr[index].url" />
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -153,15 +122,12 @@
 import { useDynamicForm } from '@/use/useDynamicForm'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive, Ref } from 'vue'
+import { defineComponent, nextTick, reactive, Ref } from 'vue'
 import { setPkRankConfig } from '../../api'
 import { RankConfigInfo } from '../../intrface'
-import { UploadFileRes, useUploadFile } from '@/use/useUploadFile'
 import { useFormCache } from '@/use/useFormCache'
-
-interface RankConfigInfoRecord extends RankConfigInfo {
-  key: number
-}
+import { usePkRankSetting } from '../../use/usePkRankSetting'
+import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
 
 const baseInfo: RankConfigInfo = {
   name: '',
@@ -171,41 +137,28 @@ const baseInfo: RankConfigInfo = {
 }
 export default defineComponent({
   name: '',
+  components: {
+    ImageUpload,
+  },
   setup() {
-    const uploadList = reactive<UploadFileRes[]>([])
-
+    const { rankConfig } = usePkRankSetting(async () => {
+      if (Object.keys(rankConfig).length) {
+        canCache.value = false
+        Object.assign(
+          rankArr,
+          JSON.parse(JSON.stringify(rankConfig.rank || []))
+        )
+        await nextTick()
+        canCache.value = true
+      }
+    })
     const {
       list: rankArr,
       addList: addRank,
       delList: splitRankArr,
-    } = useDynamicForm(baseInfo, {
-      init() {
-        const { loading, beforeUpload } = useUploadFile((value) => {
-          rankArr[0].url = value
-        })
-        uploadList.push({
-          loading,
-          beforeUpload,
-        } as any)
-      },
-      onAdd(index) {
-        const { loading, beforeUpload } = useUploadFile((value) => {
-          rankArr[index].url = value
-        })
-        uploadList.push({
-          loading,
-          beforeUpload,
-        } as any)
-      },
-      onDel(index) {
-        uploadList.splice(index, 1)
-      },
-    })
+    } = useDynamicForm(baseInfo)
 
-    function delImage(index: number) {
-      rankArr[index].url = ''
-    }
-    const { clearFormCache } = useFormCache(rankArr, {
+    const { clearFormCache, canCache } = useFormCache(rankArr, {
       key: 'PkRankConfig',
     })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
@@ -226,8 +179,6 @@ export default defineComponent({
       addRank,
       rankArr,
       splitRankArr,
-      uploadList,
-      delImage,
     }
   },
 })

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 16:41:23
+ * @LastEditTime: 2021-03-22 16:42:53
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
@@ -102,7 +102,6 @@ export default defineComponent({
     const addActivityVisible = ref(false)
     function open() {
       Object.assign(form, props.info)
-      console.log(form)
       addActivityVisible.value = true
     }
     function close() {

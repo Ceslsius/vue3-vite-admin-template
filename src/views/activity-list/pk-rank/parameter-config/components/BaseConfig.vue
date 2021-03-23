@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 14:34:12
+ * @LastEditTime: 2021-03-22 18:01:50
 -->
 <template>
   <div style="">
@@ -27,7 +27,7 @@
             prop="effective_value"
           >
             <el-input
-              v-model="form.effective_value"
+              v-model.number="form.effective_value"
               placeholder="请输入pk有效值"
             ></el-input>
           </el-form-item>
@@ -173,11 +173,12 @@
 import { useForm } from '@/use/useForm'
 import { useDynamicForm } from '@/use/useDynamicForm'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, nextTick } from 'vue'
 import { setPkBaseConfig } from '../../api'
 import type { PkBaseCofigData } from '../../intrface'
 import { isInt } from '@/utils/validate'
 import { useFormCache } from '@/use/useFormCache'
+import { usePkRankSetting } from '../../use/usePkRankSetting'
 
 interface CustomFormData extends PkBaseCofigData {
   winningStreakList: { value: string; key: number }[]
@@ -264,23 +265,52 @@ export default defineComponent({
     } = useDynamicForm({
       value: '',
     })
+    const { baseConfig } = usePkRankSetting(async () => {
+      if (Object.keys(baseConfig).length) {
+        canCache.value = false
+        Object.assign(form, JSON.parse(JSON.stringify(baseConfig)))
+        initList(1)
+        await nextTick()
+        canCache.value = true
+      }
+    })
+
     const form = reactive<CustomFormData>({
-      effective_value: 1,
-      first_win: 1,
-      winning_streak: [],
-      single_game: [],
+      effective_value: baseConfig.effective_value,
+      first_win: baseConfig.first_win,
+      winning_streak: baseConfig.winning_streak || [],
+      single_game: baseConfig.single_game || [],
       winningStreakList,
       singleGameList,
     })
 
-    const { clearFormCache } = useFormCache(form, {
+    function initList(type?: 1) {
+      canCache.value = false
+      form.winningStreakList = Object.assign(
+        winningStreakList,
+        form.winningStreakList
+      )
+      type &&
+        form.winning_streak.forEach((item, index) => {
+          winningStreakList[index] = {
+            key: index,
+            value: `${item.session},${item.integral}`,
+          }
+        })
+      form.singleGameList = Object.assign(singleGameList, form.singleGameList)
+      type &&
+        form.single_game.forEach((item, index) => {
+          singleGameList[index] = {
+            key: index,
+            value: `${item.pk_value},${item.integral}`,
+          }
+        })
+    }
+
+    const { clearFormCache, canCache } = useFormCache(form, {
       key: 'PkBaseConfig',
       onRecovery() {
-        form.winningStreakList = Object.assign(
-          winningStreakList,
-          form.winningStreakList
-        )
-        form.singleGameList = Object.assign(singleGameList, form.singleGameList)
+        initList()
       },
     })
 
@@ -309,7 +339,7 @@ export default defineComponent({
       ElMessage.success(msg)
       clearFormCache()
     })
-
+    initList(1)
     return {
       btnLoading,
       formRef,

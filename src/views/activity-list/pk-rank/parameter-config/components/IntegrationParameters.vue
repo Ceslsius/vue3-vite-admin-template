@@ -3,11 +3,11 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 14:35:02
+ * @LastEditTime: 2021-03-22 18:07:38
 -->
 <template>
   <div>
-    <el-form ref="formRef" :model="form" label-width="80px">
+    <el-form ref="formRef" :model="form" label-width="90px">
       <el-row v-for="(item, key) in form" :key="key">
         <el-col :span="6">
           <el-form-item
@@ -52,9 +52,10 @@ import { useForm } from '@/use/useForm'
 import { useFormCache } from '@/use/useFormCache'
 import { isInt } from '@/utils/validate'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive, ref, watch } from 'vue'
+import { defineComponent, nextTick, reactive, ref, watch } from 'vue'
 import { setPkIntegralConfig } from '../../api'
 import { PkIntegralConfigData } from '../../intrface'
+import { usePkRankSetting } from '../../use/usePkRankSetting'
 const labelMap: Record<string, string> = {
   same_win: '同段位胜',
   same_fail: '同段位负',
@@ -85,19 +86,32 @@ export default defineComponent({
     }
   },
   setup() {
-    const form = reactive<Record<string, number | undefined>>({
-      same_win: undefined,
-      same_fail: undefined,
-      same_equal: undefined,
-      high_win: undefined,
-      high_fail: undefined,
-      high_equal: undefined,
-      low_win: undefined,
-      low_fail: undefined,
-      low_equal: undefined,
+    const { integralConfig } = usePkRankSetting(async () => {
+      if (Object.keys(integralConfig).length) {
+        canCache.value = false
+        Object.assign(form, JSON.parse(JSON.stringify(integralConfig)))
+        await nextTick()
+        canCache.value = true
+      }
     })
+    const form = reactive<Record<string, number | undefined>>(
+      Object.assign(
+        {
+          same_win: undefined,
+          same_fail: undefined,
+          same_equal: undefined,
+          high_win: undefined,
+          high_fail: undefined,
+          high_equal: undefined,
+          low_win: undefined,
+          low_fail: undefined,
+          low_equal: undefined,
+        },
+        integralConfig
+      )
+    )
 
-    const { clearFormCache } = useFormCache(form, {
+    const { clearFormCache, canCache } = useFormCache(form, {
       key: 'PkIntegralConfig',
     })
 

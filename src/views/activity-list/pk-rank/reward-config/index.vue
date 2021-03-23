@@ -3,7 +3,7 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 18:22:24
+ * @LastEditTime: 2021-03-22 18:36:03
 -->
 <template>
   <div>
@@ -262,7 +262,7 @@ import { useForm } from '@/use/useForm'
 import { useGiftList } from '@/use/useGiftList'
 import { isInt } from '@/utils/validate'
 import { ElMessage } from 'element-plus'
-import { defineComponent, reactive, Ref } from 'vue'
+import { defineComponent, nextTick, reactive, Ref } from 'vue'
 import {
   setPkAnchorRewarConfig,
   setPkRankConfig,
@@ -272,6 +272,7 @@ import { numberCheck } from '@/utils/check'
 import { PkAnchorRewarConfigInfo, PkUserRewarConfigInfo } from '../intrface'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
 import { useFormCache } from '@/use/useFormCache'
+import { usePkRankSetting } from '../use/usePkRankSetting'
 
 const labelMap: Record<string, string> = {
   first: '第一名',
@@ -291,7 +292,7 @@ function useConfig<T>(base: T) {
   }
 }
 
-function usePkAnchorRewarConfig() {
+function usePkAnchorRewarConfig(config: Partial<PkAnchorRewarConfigInfo>) {
   const { config: pkAnchorRewarConfig } = useConfig<PkAnchorRewarConfigInfo>({
     avatar: {
       url: '',
@@ -301,12 +302,14 @@ function usePkAnchorRewarConfig() {
       url: '',
     },
   })
+  Object.keys(config).length && Object.assign(pkAnchorRewarConfig, config)
+
   return {
     pkAnchorRewarConfig,
   }
 }
 
-function usePkUserRewarConfig() {
+function usePkUserRewarConfig(config: Partial<PkUserRewarConfigInfo>) {
   const { config: pkUserRewarConfig } = useConfig<PkUserRewarConfigInfo>({
     avatar: {
       url: '',
@@ -314,6 +317,7 @@ function usePkUserRewarConfig() {
     },
     gift: {},
   })
+  Object.keys(config).length && Object.assign(pkUserRewarConfig, config)
 
   return {
     pkUserRewarConfig,
@@ -345,13 +349,29 @@ export default defineComponent({
     }
   },
   setup() {
-    const { pkAnchorRewarConfig } = usePkAnchorRewarConfig()
-    const { pkUserRewarConfig } = usePkUserRewarConfig()
+    const { userReward, anchorReward } = usePkRankSetting(async () => {
+      canCache.value = false
+
+      if (Object.keys(userReward).length) {
+        Object.assign(pkUserRewarConfig, JSON.parse(JSON.stringify(userReward)))
+      }
+      if (Object.keys(userReward).length) {
+        canCache.value = false
+        Object.assign(
+          pkAnchorRewarConfig,
+          JSON.parse(JSON.stringify(anchorReward))
+        )
+      }
+      await nextTick()
+      canCache.value = true
+    })
+    const { pkAnchorRewarConfig } = usePkAnchorRewarConfig(anchorReward)
+    const { pkUserRewarConfig } = usePkUserRewarConfig(userReward)
     const form = reactive({
       pkAnchorRewarConfig,
       pkUserRewarConfig,
     })
-    const { clearFormCache } = useFormCache(
+    const { clearFormCache, canCache } = useFormCache(
       [pkAnchorRewarConfig, pkUserRewarConfig],
       {
         key: 'pkAnchorRewarConfig-pkUserRewarConfig',

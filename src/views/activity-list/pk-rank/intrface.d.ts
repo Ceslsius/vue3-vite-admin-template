@@ -3,17 +3,17 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 17:20:57
+ * @LastEditTime: 2021-03-22 17:42:51
  */
 export interface PkBaseCofigData {
   /**
    * 有效值
    */
-  effective_value: number
+  effective_value?: number
   /**
    * 首胜
    */
-  first_win: number
+  first_win?: number
   winning_streak: {
     session: number
     integral: number
@@ -95,4 +95,23 @@ export interface PkContributionConfig {
 export interface SpecialGiftInfo {
   giftid: number
   integral: number
+}
+
+export interface BaseConfig {
+  /**
+   * 有效值
+   */
+  effective_value: number
+  /**
+   * 首胜
+   */
+  first_win: number
+  winning_streak: {
+    session: number
+    integral: number
+  }[]
+  single_game: {
+    pk_value: number
+    integral: number
+  }[]
 }
