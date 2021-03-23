@@ -1,9 +1,9 @@
 <!--
  * @Descripttion: 
  * @Author: Yi Yunwan
- * @Date: 2021-03-11 20:33:32
+ * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:35:06
+ * @LastEditTime: 2021-03-23 16:57:37
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -20,7 +20,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="关键字" v-model="form.keyword"></el-input>
+          <el-input placeholder="昵称/编号" v-model="form.keyword"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -29,31 +29,23 @@
           <el-button type="primary">导出</el-button>
         </el-form-item>
       </div>
-      <el-form-item>
-        <el-button type="primary" @click="toAddActivity">添加活动</el-button>
-      </el-form-item>
     </el-row>
   </el-form>
 
   <el-table :data="list.value" class="mt-15" height="70vh" style="width: 100%">
-    <el-table-column prop="id" label="活动编号" align="center">
+    <el-table-column prop="id" label="记录ID" align="center"> </el-table-column>
+    <el-table-column prop="uid" label="主播ID" align="center">
     </el-table-column>
-    <el-table-column prop="name" label="活动名称" align="center">
+    <el-table-column prop="user_number" label="主播编号" align="center">
     </el-table-column>
-    <el-table-column prop="start_time" label="开始时间" align="center">
+    <el-table-column prop="username" label="主播昵称" align="center">
     </el-table-column>
-    <el-table-column prop="end_time" label="结束时间" align="center">
-      <template #default="scope">
-        <span>{{ scope.row.end_time }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column prop="act_type" label="活动类型" align="center">
+    <el-table-column prop="score" label="当前积分" align="center">
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
-        <el-button type="text" @click="toUpdateActivity(scope.row)">
-          修改
-        </el-button>
+        <el-button type="text" @click="scope.any"> 修改积分 </el-button>
+        <el-button type="text" @click="scope.any"> 查看积分明细 </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -73,27 +65,17 @@
       </el-pagination>
     </div>
   </el-row>
-  <AddActivity ref="addActivityRef" @finished="onSubmit" />
-  <UpdateActivity
-    ref="updateActivityRef"
-    :info="updateForm"
-    @finished="onSubmit"
-  />
 </template>
+
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
 import { defineComponent, reactive, ref, watch } from 'vue'
-import { getActivityList } from './api'
-import { ActivityInfo } from './interface'
-import AddActivity from './components/AddActivity.vue'
-import UpdateActivity from './components/UpdateActivity.vue'
+import { getIntegralRankRecord } from '../api'
+
 export default defineComponent({
-  name: 'record',
-  components: {
-    AddActivity,
-    UpdateActivity,
-  },
+  name: 'IntegralRankRecord',
+  components: {},
   data() {
     return {}
   },
@@ -128,22 +110,8 @@ export default defineComponent({
       pageParams,
       total,
       sizeChange,
-    } = useTable(form, getActivityList)
+    } = useTable(form, getIntegralRankRecord)
     const { onSubmit, btnLoading } = useForm(search)
-
-    const updateForm = reactive<Partial<ActivityInfo>>({})
-    const updateActivityRef = ref<typeof UpdateActivity>()
-
-    function toUpdateActivity(info: ActivityInfo) {
-      Object.assign(updateForm, info)
-      updateActivityRef.value?.open()
-    }
-
-    const addActivityRef = ref<typeof AddActivity>()
-
-    function toAddActivity() {
-      addActivityRef.value?.open()
-    }
 
     return {
       list,
@@ -153,14 +121,9 @@ export default defineComponent({
       onSubmit,
       btnLoading,
       timeValue,
-      toUpdateActivity,
       sizeChange,
-      addActivityRef,
-      toAddActivity,
       search,
       form,
-      updateActivityRef,
-      updateForm,
     }
   },
 })

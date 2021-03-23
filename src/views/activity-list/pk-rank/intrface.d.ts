@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 17:42:51
+ * @LastEditTime: 2021-03-23 17:27:08
  */
 export interface PkBaseCofigData {
   /**
@@ -84,6 +84,7 @@ export interface PkUserRewarConfigInfo {
   gift: {
     id?: number
     time?: number
+    giftname?: string
   }
 }
 
@@ -93,6 +94,8 @@ export interface PkContributionConfig {
 }
 
 export interface SpecialGiftInfo {
+  key?: any
+  giftname?: string
   giftid: number
   integral: number
 }

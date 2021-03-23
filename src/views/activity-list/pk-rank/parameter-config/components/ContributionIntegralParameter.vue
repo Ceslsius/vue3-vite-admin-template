@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 18:37:49
+ * @LastEditTime: 2021-03-23 17:16:17
 -->
 <template>
   <div>
@@ -139,6 +139,7 @@ import { defineComponent, nextTick, reactive } from 'vue'
 import { setPkContributionConfig } from '../../api'
 import { numberCheck } from '@/utils/check'
 import { usePkRankSetting } from '../../use/usePkRankSetting'
+import { PkContributionConfig } from '../../intrface'
 
 const baseInfo = { giftid: '', integral: undefined }
 const min = '<'
@@ -176,7 +177,15 @@ export default defineComponent({
       },
     })
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await setPkContributionConfig(form as any)
+      const temp = JSON.parse(JSON.stringify(form)) as PkContributionConfig
+      temp.special_gift.forEach((item) => {
+        delete item.key
+        const temp = giftList.value.find((gift) => {
+          return item.giftid === gift.id
+        })
+        item.giftname = temp?.giftname
+      })
+      const { msg } = await setPkContributionConfig(temp as any)
       ElMessage.success(msg)
       clearFormCache()
     })

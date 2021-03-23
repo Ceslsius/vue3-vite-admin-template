@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 11:44:45
+ * @LastEditTime: 2021-03-23 17:16:44
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -13,14 +13,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/record',
     children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/index/index.vue'),
-        name: 'Dashboard',
-        meta: { title: '添加活动', affix: true },
-      },
+      // {
+      //   path: 'dashboard',
+      //   component: () => import('@/views/index/index.vue'),
+      //   name: 'Dashboard',
+      //   meta: { title: '添加活动', affix: true },
+      // },
       {
         path: 'record',
         component: () => import('@/views/index/record.vue'),

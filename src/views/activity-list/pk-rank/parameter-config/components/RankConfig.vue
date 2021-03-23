@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 18:12:41
+ * @LastEditTime: 2021-03-23 18:14:53
 -->
 <template>
   <div>
@@ -47,11 +47,33 @@
         <el-col :span="5">
           <el-form-item
             label="积分下限"
-            :rules="{
-              required: true,
-              message: `请输入积分下限`,
-              trigger: 'blur',
-            }"
+            :rules="[
+              {
+                required: true,
+                message: `请输入积分下限`,
+                trigger: 'blur',
+              },
+              {
+                validator: numberCheck,
+                trigger: 'blur',
+                min: 0,
+                max: 9999999,
+                isInt: true,
+              },
+              {
+                validator: numberCheck,
+                trigger: 'blur',
+                min: 0,
+                max: 9999999,
+                isInt: true,
+              },
+              {
+                validator: integralCheck,
+                type: 'under',
+                index,
+                trigger: 'blur',
+              },
+            ]"
             :prop="`[${index}].under`"
           >
             <el-input
@@ -63,11 +85,26 @@
         <el-col :span="5">
           <el-form-item
             label="积分上限"
-            :rules="{
-              required: true,
-              message: `请输入积分上限`,
-              trigger: 'blur',
-            }"
+            :rules="[
+              {
+                required: true,
+                message: `请输入积分上限`,
+                trigger: 'blur',
+              },
+              {
+                validator: numberCheck,
+                trigger: 'blur',
+                min: 1,
+                max: 9999999,
+                isInt: true,
+                includeArr: [-1],
+              },
+              {
+                validator: integralCheck,
+                type: 'upper',
+                index,
+              },
+            ]"
             :prop="`[${index}].upper`"
           >
             <el-input
@@ -128,12 +165,18 @@ import { RankConfigInfo } from '../../intrface'
 import { useFormCache } from '@/use/useFormCache'
 import { usePkRankSetting } from '../../use/usePkRankSetting'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
+import { numberCheck } from '@/utils/check'
 
 const baseInfo: RankConfigInfo = {
   name: '',
   under: '',
   upper: '',
   url: '',
+}
+
+interface IntegralCheckRule {
+  type: 'upper' | 'under'
+  index: number
 }
 export default defineComponent({
   name: '',
@@ -172,6 +215,24 @@ export default defineComponent({
       ElMessage.success(msg)
       clearFormCache()
     })
+    function integralCheck(
+      rule: IntegralCheckRule,
+      value: number,
+      callback: (error?: Error) => void
+    ) {
+      const temp = rankArr[rule.index]
+      const pretemp = rankArr[rule.index - 1]
+      const nexttemp = rankArr[rule.index + 1]
+      if (temp.under >= temp.upper) {
+        return callback(new Error('积分下限不得大于等于积分上限'))
+      }
+      if (pretemp && pretemp.upper >= temp.under && rule.type === 'under') {
+        return callback(new Error('积分下限不得小于等于上条数据积分上限'))
+      }
+      if (nexttemp && temp.upper >= nexttemp.under && rule.type === 'upper') {
+        return callback(new Error('积分下限不得小于等于上条数据积分上限'))
+      }
+    }
     return {
       formRef,
       btnLoading,
@@ -179,6 +240,8 @@ export default defineComponent({
       addRank,
       rankArr,
       splitRankArr,
+      numberCheck,
+      integralCheck,
     }
   },
 })

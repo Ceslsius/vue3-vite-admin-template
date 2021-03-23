@@ -3,13 +3,16 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 15:44:14
+ * @LastEditTime: 2021-03-23 17:37:55
 -->
 <template>
   <el-dialog title="添加活动" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="活动编号" prop="code">
-        <el-input v-model="form.code" placeholder="请输入活动编号"></el-input>
+        <el-input
+          v-model.number="form.code"
+          placeholder="请输入活动编号"
+        ></el-input>
       </el-form-item>
       <el-form-item label="活动名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入活动名称"></el-input>
@@ -61,24 +64,36 @@ import { addActivity } from '../api'
 import type { ActivityAddData } from '../interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
+import { numberCheck } from '@/utils/check'
 
 export default defineComponent({
   name: 'AddActivity',
   data() {
     return {
       rules: {
-        code: { required: true, message: '请输入活动名称', trigger: 'blur' },
-        name: { required: true, message: '请输入活动编号', trigger: 'blur' },
+        code: [
+          { required: true, message: '请输入活动编号', trigger: 'blur' },
+          {
+            validator: numberCheck,
+            trigger: 'blur',
+            min: 1,
+            max: 9999999,
+            isInt: true,
+          },
+        ],
+        name: { required: true, message: '请输入活动名称', trigger: 'blur' },
         start_time: {
           required: true,
           message: '请选择开始时间',
           trigger: 'change',
         },
-        end_time: {
-          required: true,
-          message: '请选择结束时间',
-          trigger: 'change',
-        },
+        end_time: [
+          {
+            required: true,
+            message: '请选择结束时间',
+            trigger: 'change',
+          },
+        ],
         act_type: {
           required: true,
           message: '请选择活动类型',

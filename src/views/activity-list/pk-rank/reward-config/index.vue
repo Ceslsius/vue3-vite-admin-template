@@ -3,7 +3,7 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 18:36:03
+ * @LastEditTime: 2021-03-23 17:32:33
 -->
 <template>
   <div>
@@ -50,7 +50,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" v-if="key !== 'four_to_ten'">
           <el-col :span="5">
             <el-form-item
               label="直播封面标签"
@@ -162,7 +162,7 @@
               使用时长：单位天，1-1000正整数
             </div>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="6" v-if="key === 'first'">
             <el-form-item
               label="头像框"
               :prop="`pkUserRewarConfig.${key}.avatar.url`"
@@ -175,7 +175,7 @@
               <ImageUpload v-model:url="pkUserRewarConfig[key].avatar.url" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="key === 'first'">
             <el-form-item
               label="使用时长"
               :prop="`pkUserRewarConfig[${key}].avatar.time`"
@@ -208,6 +208,7 @@
             >
               <el-select
                 v-model="pkUserRewarConfig[key].gift.id"
+                @change="changeGift(key)"
                 placeholder="请选择礼物"
               >
                 <el-option
@@ -387,6 +388,14 @@ export default defineComponent({
       clearFormCache()
     })
 
+    async function changeGift(key: string) {
+      await nextTick()
+      const temp = giftList.value.find((item) => {
+        return item.id === pkUserRewarConfig[key].gift.id
+      })
+      pkUserRewarConfig[key].gift.giftname = temp?.giftname
+    }
+
     return {
       formRef,
       onSubmit,
@@ -396,6 +405,7 @@ export default defineComponent({
       labelMap,
       form,
       giftList,
+      changeGift,
     }
   },
 })

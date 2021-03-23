@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-19 17:38:55
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 17:49:20
+ * @LastEditTime: 2021-03-23 17:17:40
  */
 
 import { adminStorage } from '@/utils'
@@ -23,7 +23,7 @@ export function useFormCache(
   watch(
     target,
     () => {
-      canCache.value && adminStorage.setItem(options.key, target)
+      // canCache.value && adminStorage.setItem(options.key, target)
     },
     {
       deep: true,
