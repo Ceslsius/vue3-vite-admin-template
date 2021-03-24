@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 14:53:26
+ * @LastEditTime: 2021-03-24 15:02:57
 -->
 <template>
   <div>
@@ -184,7 +184,6 @@ export default defineComponent({
       addList: addRank,
       delList: splitRankArr,
     } = useDynamicForm(baseInfo)
-    console.log(rankArr)
 
     const { rankConfig } = usePkRankSetting(async () => {
       if (Object.keys(rankConfig).length) {
@@ -193,7 +192,6 @@ export default defineComponent({
           rankArr,
           JSON.parse(JSON.stringify(rankConfig.rank || []))
         )
-        console.log(rankArr)
       }
     })
 

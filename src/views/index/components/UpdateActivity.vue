@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 14:57:06
+ * @LastEditTime: 2021-03-24 15:05:55
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
@@ -80,6 +80,7 @@ import type { ActivityAddData, ActivityInfo } from '../interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
 import { numberCheck } from '@/utils/check'
+import dayjs from 'dayjs'
 
 export default defineComponent({
   name: 'AddActivity',
@@ -147,12 +148,14 @@ export default defineComponent({
       addActivityVisible.value = false
     }
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
+      console.log(dayjs(form.start_time))
+
       const { msg } = await updateActivity({
         ...form,
         // @ts-ignore
-        start_time: Math.floor(form.start_time.getTime() / 1000),
+        start_time: Math.floor(new Date(form.start_time).getTime() / 1000),
         // @ts-ignore
-        end_time: Math.floor(form.end_time.getTime() / 1000),
+        end_time: Math.floor(new Date(form.end_time).getTime() / 1000),
       })
       ElMessage.success(msg)
       ctx.emit('finished')
