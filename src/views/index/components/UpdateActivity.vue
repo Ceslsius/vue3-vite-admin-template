@@ -3,13 +3,17 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 16:42:53
+ * @LastEditTime: 2021-03-24 10:36:06
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="活动编号" prop="code">
-        <el-input v-model="form.code" placeholder="请输入活动编号"></el-input>
+        <el-input
+          type="number"
+          v-model="form.code"
+          placeholder="请输入活动编号"
+        ></el-input>
       </el-form-item>
       <el-form-item label="活动名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入活动名称"></el-input>
@@ -22,7 +26,21 @@
           style="width: 100%"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="结束时间" prop="end_time">
+      <el-form-item
+        label="结束时间"
+        prop="end_time"
+        :rules="[
+          {
+            required: true,
+            message: '请选择结束时间',
+            trigger: 'change',
+          },
+          {
+            validator: dateCheck,
+            trigger: 'blur',
+          },
+        ]"
+      >
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -108,11 +126,29 @@ export default defineComponent({
       addActivityVisible.value = false
     }
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await updateActivity(form)
+      const { msg } = await updateActivity({
+        ...form,
+        // @ts-ignore
+        start_time: Math.floor(form.start_time.getTime() / 1000),
+        // @ts-ignore
+        end_time: Math.floor(form.end_time.getTime() / 1000),
+      })
       ElMessage.success(msg)
       ctx.emit('finished')
       close()
     })
+
+    function dateCheck(
+      rule: any,
+      value: Date,
+      callback: (error?: Error) => void
+    ) {
+      // @ts-ignore
+      if (value?.getTime() < form.start_time.getTime()) {
+        return callback(new Error('结束时间不得小于开始时间'))
+      }
+      return callback()
+    }
 
     return {
       form,
@@ -122,6 +158,7 @@ export default defineComponent({
       addActivityVisible,
       open,
       close,
+      dateCheck,
     }
   },
 })

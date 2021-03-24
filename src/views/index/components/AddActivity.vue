@@ -3,13 +3,14 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 09:58:30
+ * @LastEditTime: 2021-03-24 10:37:53
 -->
 <template>
   <el-dialog title="添加活动" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="活动编号" prop="code">
         <el-input
+          type="number"
           v-model.number="form.code"
           placeholder="请输入活动编号"
         ></el-input>
@@ -127,13 +128,26 @@ export default defineComponent({
 
     const addActivityVisible = ref(false)
     function open() {
+      Object.assign(form, {
+        name: '',
+        act_type: '',
+        code: '',
+        start_time: '',
+        end_time: '',
+      })
       addActivityVisible.value = true
     }
     function close() {
       addActivityVisible.value = false
     }
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await addActivity(form)
+      const { msg } = await addActivity({
+        ...form,
+        // @ts-ignore
+        start_time: Math.floor(form.start_time.getTime() / 1000),
+        // @ts-ignore
+        end_time: Math.floor(form.end_time.getTime() / 1000),
+      })
       ElMessage.success(msg)
       ctx.emit('finished')
       close()
@@ -148,6 +162,7 @@ export default defineComponent({
       if (value?.getTime() < form.start_time.getTime()) {
         return callback(new Error('结束时间不得小于开始时间'))
       }
+      return callback()
     }
 
     return {
