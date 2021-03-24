@@ -20,7 +20,10 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="昵称/编号" v-model="form.keyword"></el-input>
+          <el-input
+            placeholder="活动名称、活动ID"
+            v-model="form.keyword"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
