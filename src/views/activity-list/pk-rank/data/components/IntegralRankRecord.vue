@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 11:48:25
+ * @LastEditTime: 2021-03-24 16:08:39
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item label="关键字">
           <el-input
-            placeholder="活动名称、活动ID"
+            placeholder="主播昵称、主播ID"
             v-model="form.keyword"
           ></el-input>
         </el-form-item>

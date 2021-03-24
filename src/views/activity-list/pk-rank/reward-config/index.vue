@@ -3,7 +3,7 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:32:33
+ * @LastEditTime: 2021-03-24 16:31:43
 -->
 <template>
   <div>
@@ -50,8 +50,8 @@
             </div>
           </el-col>
         </el-row>
-        <el-row type="flex" v-if="key !== 'four_to_ten'">
-          <el-col :span="5">
+        <el-row type="flex">
+          <el-col :span="5" v-if="key !== 'four_to_ten'">
             <el-form-item
               label="直播封面标签"
               :prop="`pkAnchorRewarConfig.${key}.live_label.url`"
@@ -66,7 +66,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="key !== 'four_to_ten'">
             <el-form-item
               label="使用时长"
               :rules="useTimeRules"
@@ -79,7 +79,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="key !== 'four_to_ten'">
             <div class="form-item-tips">
               <i class="el-icon-info"></i>
               单位天，1-1000正整数
@@ -261,14 +261,9 @@
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { useGiftList } from '@/use/useGiftList'
-import { isInt } from '@/utils/validate'
 import { ElMessage } from 'element-plus'
 import { defineComponent, nextTick, reactive, Ref } from 'vue'
-import {
-  setPkAnchorRewarConfig,
-  setPkRankConfig,
-  setPkUserRewarConfig,
-} from '../api'
+import { setPkAnchorRewarConfig, setPkUserRewarConfig } from '../api'
 import { numberCheck } from '@/utils/check'
 import { PkAnchorRewarConfigInfo, PkUserRewarConfigInfo } from '../intrface'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:27:08
+ * @LastEditTime: 2021-03-24 16:19:56
  */
 export interface PkBaseCofigData {
   /**
@@ -42,8 +42,8 @@ export interface PkRankConfigData {
 
 export interface RankConfigInfo {
   name: string
-  under: string
-  upper: string
+  under: number
+  upper: number
   url: string
 }
 

@@ -3,14 +3,15 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 15:05:55
+ * @LastEditTime: 2021-03-24 16:31:18
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="活动编号" prop="code">
+      <el-form-item label="活动编号">
         <el-input
           type="number"
+          disabled
           v-model.number="form.code"
           placeholder="请输入活动编号"
         ></el-input>

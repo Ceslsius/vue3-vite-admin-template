@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 14:05:51
+ * @LastEditTime: 2021-03-24 16:21:48
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -20,7 +20,10 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="昵称/编号" v-model="form.keyword"></el-input>
+          <el-input
+            placeholder="活动名称、活动编号"
+            v-model="form.keyword"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>

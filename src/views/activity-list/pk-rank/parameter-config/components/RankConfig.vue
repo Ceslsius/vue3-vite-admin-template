@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 15:02:57
+ * @LastEditTime: 2021-03-24 16:18:22
 -->
 <template>
   <div>
@@ -210,10 +210,18 @@ export default defineComponent({
       value: number,
       callback: (error?: Error) => void
     ) {
+      if (value === -1) {
+        return callback()
+      }
       const temp = rankArr[rule.index]
       const pretemp = rankArr[rule.index - 1]
       const nexttemp = rankArr[rule.index + 1]
-      if (temp.under && temp.upper && temp.under >= temp.upper) {
+      if (
+        temp.upper != -1 &&
+        temp.under &&
+        temp.upper &&
+        temp.under >= temp.upper
+      ) {
         return callback(new Error('积分下限不得大于等于积分上限'))
       }
       if (
