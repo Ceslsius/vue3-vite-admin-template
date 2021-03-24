@@ -3,10 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 11:48:14
+ * @LastEditTime: 2021-03-24 14:05:51
 -->
 <template>
-  <el-form :inline="true" class="demo-form-inline">
+  <el-form :inline="true" ref="formRef" class="demo-form-inline">
     <el-row type="flex" justify="space-between">
       <div>
         <el-form-item label="活动时间">
@@ -20,7 +20,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="/编昵称号" v-model="form.keyword"></el-input>
+          <el-input placeholder="昵称/编号" v-model="form.keyword"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -86,7 +86,7 @@ import { useTable } from '@/use/useTable'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { getActivityList } from './api'
 import { activityTypeList } from '@/record/activityTypeList'
-import { ActivityInfo } from './interface'
+import type { ActivityInfo } from './interface'
 import AddActivity from './components/AddActivity.vue'
 import UpdateActivity from './components/UpdateActivity.vue'
 

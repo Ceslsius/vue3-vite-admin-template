@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 11:14:07
+ * @LastEditTime: 2021-03-24 12:19:39
 -->
 <template>
   <el-dialog title="添加活动" v-model="addActivityVisible">
@@ -117,6 +117,7 @@ export default defineComponent({
       },
     }
   },
+  emits: ['finished'],
   setup(props, ctx) {
     const form = reactive<ActivityAddData>({
       name: '',

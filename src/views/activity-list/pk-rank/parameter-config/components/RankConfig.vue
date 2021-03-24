@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 18:14:53
+ * @LastEditTime: 2021-03-24 14:53:26
 -->
 <template>
   <div>
@@ -61,13 +61,6 @@
                 isInt: true,
               },
               {
-                validator: numberCheck,
-                trigger: 'blur',
-                min: 0,
-                max: 9999999,
-                isInt: true,
-              },
-              {
                 validator: integralCheck,
                 type: 'under',
                 index,
@@ -77,6 +70,7 @@
             :prop="`[${index}].under`"
           >
             <el-input
+              type="number"
               placeholder="积分下限"
               v-model.number="item.under"
             ></el-input>
@@ -108,6 +102,7 @@
             :prop="`[${index}].upper`"
           >
             <el-input
+              type="number"
               placeholder="积分上限"
               v-model.number="item.upper"
             ></el-input>
@@ -184,26 +179,24 @@ export default defineComponent({
     ImageUpload,
   },
   setup() {
-    const { rankConfig } = usePkRankSetting(async () => {
-      if (Object.keys(rankConfig).length) {
-        canCache.value = false
-        Object.assign(
-          rankArr,
-          JSON.parse(JSON.stringify(rankConfig.rank || []))
-        )
-        await nextTick()
-        canCache.value = true
-      }
-    })
     const {
       list: rankArr,
       addList: addRank,
       delList: splitRankArr,
     } = useDynamicForm(baseInfo)
+    console.log(rankArr)
 
-    const { clearFormCache, canCache } = useFormCache(rankArr, {
-      key: 'PkRankConfig',
+    const { rankConfig } = usePkRankSetting(async () => {
+      if (Object.keys(rankConfig).length) {
+        await nextTick()
+        Object.assign(
+          rankArr,
+          JSON.parse(JSON.stringify(rankConfig.rank || []))
+        )
+        console.log(rankArr)
+      }
     })
+
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const rank = JSON.parse(JSON.stringify(rankArr)) as Array<any>
       rank.forEach((item) => {
@@ -213,7 +206,6 @@ export default defineComponent({
         rank,
       })
       ElMessage.success(msg)
-      clearFormCache()
     })
     function integralCheck(
       rule: IntegralCheckRule,
@@ -223,15 +215,28 @@ export default defineComponent({
       const temp = rankArr[rule.index]
       const pretemp = rankArr[rule.index - 1]
       const nexttemp = rankArr[rule.index + 1]
-      if (temp.under >= temp.upper) {
+      if (temp.under && temp.upper && temp.under >= temp.upper) {
         return callback(new Error('积分下限不得大于等于积分上限'))
       }
-      if (pretemp && pretemp.upper >= temp.under && rule.type === 'under') {
+      if (
+        pretemp &&
+        pretemp.upper &&
+        temp.under &&
+        pretemp.upper >= temp.under &&
+        rule.type === 'under'
+      ) {
         return callback(new Error('积分下限不得小于等于上条数据积分上限'))
       }
-      if (nexttemp && temp.upper >= nexttemp.under && rule.type === 'upper') {
+      if (
+        nexttemp &&
+        nexttemp.under &&
+        temp.upper &&
+        temp.upper >= nexttemp.under &&
+        rule.type === 'upper'
+      ) {
         return callback(new Error('积分下限不得小于等于上条数据积分上限'))
       }
+      return callback()
     }
     return {
       formRef,

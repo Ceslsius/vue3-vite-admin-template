@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-16 14:41:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-17 11:16:53
+ * @LastEditTime: 2021-03-24 14:43:18
  */
 
 import { uploadFile } from '@/api'
@@ -22,7 +22,7 @@ export function useUploadFile<T>(
     } finally {
       loading.value = false
     }
-    return false
+    return Promise.reject()
   }
   return {
     beforeUpload,

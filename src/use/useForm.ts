@@ -3,13 +3,14 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:13:58
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 11:14:30
+ * @LastEditTime: 2021-03-24 14:49:54
  */
 
 import { nextTick, ref } from 'vue'
 
 interface FormRef {
   validate(callback: (valid: boolean) => void): void
+  validate(): Promise<boolean>
   clearValidate(): void
 }
 
@@ -28,11 +29,12 @@ export function useForm(service: Function) {
     if (btnLoading.value) return
     await nextTick()
     if (formRef.value) {
-      formRef.value?.validate(async (valid) => {
-        if (valid) {
-          request()
-        }
-      })
+      try {
+        const res = await formRef.value.validate()
+        request()
+      } catch (error) {
+        console.error(error)
+      }
     } else {
       request()
     }

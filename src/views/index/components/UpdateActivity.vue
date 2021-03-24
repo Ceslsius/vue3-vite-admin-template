@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 10:36:06
+ * @LastEditTime: 2021-03-24 14:57:06
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
@@ -11,7 +11,7 @@
       <el-form-item label="活动编号" prop="code">
         <el-input
           type="number"
-          v-model="form.code"
+          v-model.number="form.code"
           placeholder="请输入活动编号"
         ></el-input>
       </el-form-item>
@@ -74,29 +74,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, nextTick, PropType, toRef } from 'vue'
+import { addActivity, updateActivity } from '../api'
 import type { ActivityAddData, ActivityInfo } from '../interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
-import { updateActivity } from '../api'
+import { numberCheck } from '@/utils/check'
 
 export default defineComponent({
-  name: 'UpdateActivity',
+  name: 'AddActivity',
   data() {
     return {
       rules: {
-        code: { required: true, message: '请输入活动名称', trigger: 'blur' },
-        name: { required: true, message: '请输入活动编号', trigger: 'blur' },
+        code: [
+          { required: true, message: '请输入活动编号', trigger: 'blur' },
+          {
+            validator: numberCheck,
+            trigger: 'blur',
+            min: 1,
+            max: 9999999,
+            isInt: true,
+          },
+        ],
+        name: { required: true, message: '请输入活动名称', trigger: 'blur' },
         start_time: {
           required: true,
           message: '请选择开始时间',
           trigger: 'change',
         },
-        end_time: {
-          required: true,
-          message: '请选择结束时间',
-          trigger: 'change',
-        },
+        end_time: [
+          {
+            required: true,
+            message: '请选择结束时间',
+            trigger: 'change',
+          },
+        ],
         act_type: {
           required: true,
           message: '请选择活动类型',
@@ -115,12 +127,21 @@ export default defineComponent({
   },
   emits: ['finished'],
   setup(props, ctx) {
-    const form = reactive<ActivityInfo>(props.info)
+    const form = reactive<ActivityAddData>({
+      name: '',
+      act_type: '',
+      code: '',
+      start_time: '',
+      end_time: '',
+    })
 
     const addActivityVisible = ref(false)
-    function open() {
+    async function open() {
       Object.assign(form, props.info)
+
       addActivityVisible.value = true
+      await nextTick()
+      formRef.value?.clearValidate()
     }
     function close() {
       addActivityVisible.value = false
@@ -140,13 +161,17 @@ export default defineComponent({
 
     function dateCheck(
       rule: any,
-      value: Date,
+      value: Date | undefined,
       callback: (error?: Error) => void
     ) {
-      // @ts-ignore
-      if (value?.getTime() < form.start_time.getTime()) {
-        return callback(new Error('结束时间不得小于开始时间'))
+      console.log(value)
+
+      if (form.start_time instanceof Date && value) {
+        if (value.getTime() < form.start_time.getTime()) {
+          return callback(new Error('结束时间不得小于开始时间'))
+        }
       }
+
       return callback()
     }
 
