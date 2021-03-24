@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:35:06
+ * @LastEditTime: 2021-03-24 10:13:36
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -20,13 +20,10 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="关键字">
-          <el-input placeholder="关键字" v-model="form.keyword"></el-input>
+          <el-input placeholder="昵称/编号" v-model="form.keyword"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">搜索</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">导出</el-button>
         </el-form-item>
       </div>
       <el-form-item>
@@ -48,6 +45,9 @@
       </template>
     </el-table-column>
     <el-table-column prop="act_type" label="活动类型" align="center">
+      <template #default="scope">
+        <div>{{ findType(scope.row.act_type) }}</div>
+      </template>
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
@@ -85,9 +85,11 @@ import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { getActivityList } from './api'
+import { activityTypeList } from '@/record/activityTypeList'
 import { ActivityInfo } from './interface'
 import AddActivity from './components/AddActivity.vue'
 import UpdateActivity from './components/UpdateActivity.vue'
+
 export default defineComponent({
   name: 'record',
   components: {
@@ -145,6 +147,13 @@ export default defineComponent({
       addActivityRef.value?.open()
     }
 
+    function findType(type: string) {
+      const temp = activityTypeList.find((item) => {
+        return type === item.value
+      })
+      return temp?.label
+    }
+
     return {
       list,
       total,
@@ -161,6 +170,7 @@ export default defineComponent({
       form,
       updateActivityRef,
       updateForm,
+      findType,
     }
   },
 })

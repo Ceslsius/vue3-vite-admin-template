@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 14:27:19
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 16:15:30
+ * @LastEditTime: 2021-03-24 09:46:16
  */
 export interface ActivityAddData {
   /**
@@ -21,7 +21,7 @@ export interface ActivityAddData {
   /**
    * 	活动编号
    */
-  start_time: string
+  start_time: Date | string
   /**
    * 结束时间
    */

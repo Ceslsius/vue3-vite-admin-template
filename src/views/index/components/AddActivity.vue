@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:37:55
+ * @LastEditTime: 2021-03-24 09:58:30
 -->
 <template>
   <el-dialog title="添加活动" v-model="addActivityVisible">
@@ -25,7 +25,21 @@
           style="width: 100%"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="结束时间" prop="end_time">
+      <el-form-item
+        label="结束时间"
+        prop="end_time"
+        :rules="[
+          {
+            required: true,
+            message: '请选择结束时间',
+            trigger: 'change',
+          },
+          {
+            validator: dateCheck,
+            trigger: 'blur',
+          },
+        ]"
+      >
         <el-date-picker
           type="date"
           placeholder="选择日期"
@@ -125,6 +139,17 @@ export default defineComponent({
       close()
     })
 
+    function dateCheck(
+      rule: any,
+      value: Date,
+      callback: (error?: Error) => void
+    ) {
+      // @ts-ignore
+      if (value?.getTime() < form.start_time.getTime()) {
+        return callback(new Error('结束时间不得小于开始时间'))
+      }
+    }
+
     return {
       form,
       onSubmit,
@@ -133,6 +158,7 @@ export default defineComponent({
       addActivityVisible,
       open,
       close,
+      dateCheck,
     }
   },
 })
