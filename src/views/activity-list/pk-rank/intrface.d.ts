@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:19:56
+ * @LastEditTime: 2021-03-24 17:19:28
  */
 export interface PkBaseCofigData {
   /**
@@ -85,6 +85,7 @@ export interface PkUserRewarConfigInfo {
     id?: number
     time?: number
     giftname?: string
+    count?: number
   }
 }
 

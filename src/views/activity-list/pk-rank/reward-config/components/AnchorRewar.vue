@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:29:43
+ * @LastEditTime: 2021-03-24 16:57:12
 -->
 <template>
   <div>
@@ -13,11 +13,15 @@
       border
       style="width: 100%; margin-top: 20px"
     >
-      <el-table-column prop="id" label="ID" width="180"> </el-table-column>
-      <el-table-column prop="name" label="姓名"> </el-table-column>
-      <el-table-column prop="amount1" label="数值 1（元）"> </el-table-column>
-      <el-table-column prop="amount2" label="数值 2（元）"> </el-table-column>
-      <el-table-column prop="amount3" label="数值 3（元）"> </el-table-column>
+      <el-table-column prop="label" label="名次" align="center">
+      </el-table-column>
+      <el-table-column prop="name" label="奖励类型" align="center">
+      </el-table-column>
+      <el-table-column prop="count" label="奖项值" align="center">
+      </el-table-column>
+      <el-table-column prop="time" label="使用时长" align="center">
+      </el-table-column>
+      <el-table-column label="操作"> </el-table-column>
     </el-table>
   </div>
 </template>
@@ -30,39 +34,70 @@ export default defineComponent({
     return {
       tableData: [
         {
-          id: '12987122',
-          name: '王小虎',
-          amount1: '234',
-          amount2: '3.2',
-          amount3: 10,
+          label: '1',
+          name: '头像框',
+          count: '234',
+          time: '3.2',
         },
         {
-          id: '12987123',
-          name: '王小虎',
-          amount1: '165',
-          amount2: '4.43',
-          amount3: 12,
+          label: '1',
+          name: '直播封面标签',
+          count: '234',
+          time: '3.2',
         },
         {
-          id: '12987124',
-          name: '王小虎',
-          amount1: '324',
-          amount2: '1.9',
-          amount3: 9,
+          label: '1',
+          name: 'T钻',
+          count: '234',
+          time: '3.2',
         },
         {
-          id: '12987125',
-          name: '王小虎',
-          amount1: '621',
-          amount2: '2.2',
-          amount3: 17,
+          label: '2',
+          name: '头像框',
+          count: '234',
+          time: '3.2',
         },
         {
-          id: '12987126',
-          name: '王小虎',
-          amount1: '539',
-          amount2: '4.1',
-          amount3: 15,
+          label: '2',
+          name: '直播封面标签',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '2',
+          name: 'T钻',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '3',
+          name: '头像框',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '3',
+          name: '直播封面标签',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '3',
+          name: 'T钻',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '4~10',
+          name: '头像框',
+          count: '234',
+          time: '3.2',
+        },
+        {
+          label: '4~10',
+          name: 'T钻',
+          count: '234',
+          time: '3.2',
         },
       ],
     }
@@ -80,9 +115,9 @@ export default defineComponent({
 
     objectSpanMethod({ row, column, rowIndex, columnIndex }: any) {
       if (columnIndex === 0) {
-        if (rowIndex % 2 === 0) {
+        if (rowIndex % 3 === 0) {
           return {
-            rowspan: 2,
+            rowspan: 3,
             colspan: 1,
           }
         } else {

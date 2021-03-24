@@ -3,9 +3,10 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:31:43
+ * @LastEditTime: 2021-03-24 17:21:59
 -->
 <template>
+  <!-- <AnchorRewar /> -->
   <div>
     <el-form ref="formRef" :model="form" label-width="110px">
       <el-form-item label-width="0">
@@ -221,7 +222,20 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
+            <el-form-item
+              label="礼物个数"
+              :prop="`pkUserRewarConfig[${key}].gift.count`"
+              :rules="useTimeRules"
+            >
+              <el-input
+                type="number"
+                v-model.number="pkUserRewarConfig[key].gift.count"
+                placeholder="请输入礼物个数（1-1000正整数）"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
             <el-form-item
               label="使用时长"
               :prop="`pkUserRewarConfig[${key}].gift.time`"
@@ -234,7 +248,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <div class="form-item-tips">
               <div>
                 <i class="el-icon-info"></i>
@@ -269,7 +283,7 @@ import { PkAnchorRewarConfigInfo, PkUserRewarConfigInfo } from '../intrface'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
 import { useFormCache } from '@/use/useFormCache'
 import { usePkRankSetting } from '../use/usePkRankSetting'
-
+import AnchorRewar from './components/AnchorRewar.vue'
 const labelMap: Record<string, string> = {
   first: '第一名',
   second: '第二名',
@@ -324,13 +338,14 @@ export default defineComponent({
   name: '',
   components: {
     ImageUpload,
+    AnchorRewar,
   },
   data() {
     return {
       useTimeRules: [
         {
           required: true,
-          message: '请输入使用时长',
+          message: '不能为空',
           trigger: 'blur',
         },
         {

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:08:39
+ * @LastEditTime: 2021-03-24 17:14:36
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -47,7 +47,9 @@
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
-        <el-button type="text" @click="scope.any"> 修改积分 </el-button>
+        <el-button type="text" @click="changeIntegral(scope)">
+          修改积分
+        </el-button>
         <el-button type="text" @click="scope.any"> 查看积分明细 </el-button>
       </template>
     </el-table-column>
@@ -68,6 +70,18 @@
       </el-pagination>
     </div>
   </el-row>
+
+  <el-dialog title="提示" v-model="dialogVisible" width="30%">
+    <span>这是一段信息</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">
+          确 定
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script lang="ts">
@@ -115,6 +129,8 @@ export default defineComponent({
       sizeChange,
     } = useTable(form, getIntegralRankRecord)
     const { onSubmit, btnLoading } = useForm(search)
+    const dialogVisible = ref(false)
+    function changeIntegral(info: any) {}
 
     return {
       list,
@@ -127,6 +143,8 @@ export default defineComponent({
       sizeChange,
       search,
       form,
+      dialogVisible,
+      changeIntegral,
     }
   },
 })
