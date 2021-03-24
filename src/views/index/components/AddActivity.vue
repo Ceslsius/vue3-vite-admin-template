@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 10:37:53
+ * @LastEditTime: 2021-03-24 11:14:07
 -->
 <template>
   <el-dialog title="添加活动" v-model="addActivityVisible">
@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref, nextTick } from 'vue'
 import { addActivity } from '../api'
 import type { ActivityAddData } from '../interface'
 import { useForm } from '@/use/useForm'
@@ -127,7 +127,7 @@ export default defineComponent({
     })
 
     const addActivityVisible = ref(false)
-    function open() {
+    async function open() {
       Object.assign(form, {
         name: '',
         act_type: '',
@@ -136,6 +136,8 @@ export default defineComponent({
         end_time: '',
       })
       addActivityVisible.value = true
+      await nextTick()
+      formRef.value?.clearValidate()
     }
     function close() {
       addActivityVisible.value = false

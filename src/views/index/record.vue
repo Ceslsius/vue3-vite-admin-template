@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 10:13:36
+ * @LastEditTime: 2021-03-24 11:19:18
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -11,7 +11,7 @@
       <div>
         <el-form-item label="活动时间">
           <el-date-picker
-            type="datetimerange"
+            type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -115,8 +115,10 @@ export default defineComponent({
           form.end_time = undefined
           return
         }
-        form.start_time = timeValue.value[0]
-        form.end_time = timeValue.value[1]
+        form.start_time = Math.floor(timeValue.value[0].getTime() / 1000)
+        form.end_time = Math.floor(
+          (timeValue.value[1].getTime() + 24 * 60 * 60 * 1000 - 1000) / 1000
+        )
       },
       {
         deep: true,

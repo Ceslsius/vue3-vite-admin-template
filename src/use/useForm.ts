@@ -3,13 +3,14 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:13:58
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 17:23:32
+ * @LastEditTime: 2021-03-24 11:14:30
  */
 
 import { nextTick, ref } from 'vue'
 
 interface FormRef {
   validate(callback: (valid: boolean) => void): void
+  clearValidate(): void
 }
 
 export function useForm(service: Function) {
