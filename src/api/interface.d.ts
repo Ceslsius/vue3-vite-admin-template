@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:41
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 16:00:54
+ * @LastEditTime: 2021-03-24 17:34:18
  */
 
 interface GetActivityConfigParams {
@@ -27,4 +27,5 @@ interface GetActivityConfigParams {
 interface GiftInfo {
   id: number
   giftname: string
+  url: string
 }

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:16:17
+ * @LastEditTime: 2021-03-24 17:32:19
 -->
 <template>
   <div>
@@ -184,6 +184,7 @@ export default defineComponent({
           return item.giftid === gift.id
         })
         item.giftname = temp?.giftname
+        item.url = temp?.url
       })
       const { msg } = await setPkContributionConfig(temp as any)
       ElMessage.success(msg)

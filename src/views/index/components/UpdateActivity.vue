@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:31:18
+ * @LastEditTime: 2021-03-25 14:18:58
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
@@ -165,18 +165,22 @@ export default defineComponent({
 
     function dateCheck(
       rule: any,
-      value: Date | undefined,
+      value: Date | string,
       callback: (error?: Error) => void
     ) {
-      console.log(value)
-
-      if (form.start_time instanceof Date && value) {
-        if (value.getTime() < form.start_time.getTime()) {
+      try {
+        const startTime =
+          form.start_time instanceof Date
+            ? form.start_time
+            : new Date(form.start_time)
+        const endTime = value instanceof Date ? value : new Date(value)
+        if (endTime.getTime() < startTime.getTime()) {
           return callback(new Error('结束时间不得小于开始时间'))
         }
+        return callback()
+      } catch (error) {
+        return callback(error)
       }
-
-      return callback()
     }
 
     return {
