@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-09-04 17:13:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 14:02:58
+ * @LastEditTime: 2021-03-26 10:16:30
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { apiMock, baseURL, mockBaseURL, SECRET_KEY } from '@/config'
@@ -52,6 +52,9 @@ export function serviceFulfilled(response: AxiosResponse) {
   // 对响应数据做点什么
   const data = response.data as CusResponse
   if (response.status === 200) {
+    if (data instanceof ArrayBuffer || data instanceof Blob) {
+      return response.data
+    }
     if (data.code == '200') {
       return response.data
     } else if (data.code == '100003') {

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 11:48:25
+ * @LastEditTime: 2021-03-26 11:45:17
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -47,9 +47,7 @@
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
-        <el-button type="text" @click="toLookInfo(scope.row)">
-          查看积分明细
-        </el-button>
+        <el-button type="text" @click="scope.any"> 查看积分明细 </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -69,32 +67,27 @@
       </el-pagination>
     </div>
   </el-row>
-
-  <el-dialog
-    :title="`主播${integralRankRecordInfo.username}积分排行记录明细`"
-    v-model="infoDialogVisible"
-    width="80%"
-    top="5vh"
-  >
-    <ContributionIntegralRankInfo :info="integralRankRecordInfo" />
-  </el-dialog>
 </template>
 
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
-import { computed, defineComponent, reactive, ref, watch } from 'vue'
-import { exportUserContributionRank, getContributionRankList } from '../api'
-import ContributionIntegralRankInfo from './ContributionIntegralRankInfo.vue'
+import { computed, defineComponent, PropType, reactive, ref, watch } from 'vue'
+import { exportContributionRankInfo, getContributionRankInfo } from '../api'
+
 export default defineComponent({
   name: 'ContributionIntegralRankRecord',
-  components: {
-    ContributionIntegralRankInfo,
-  },
+  components: {},
   data() {
     return {}
   },
-  setup() {
+  props: {
+    info: {
+      required: true,
+      type: Object as PropType<Partial<ContributionRankInfo>>,
+    },
+  },
+  setup(props) {
     const form = reactive({
       keyword: '',
       start_time: '' as any,
@@ -128,6 +121,7 @@ export default defineComponent({
       return {
         ...form,
         start_time,
+        uid: props.info.uid,
         end_time,
       }
     })
@@ -140,18 +134,26 @@ export default defineComponent({
       total,
       sizeChange,
       exportExcel,
-    } = useTable(tempForm, getContributionRankList, {
+    } = useTable(tempForm, getContributionRankInfo, {
       exportExcelName: '贡献积分排行记录',
-      exportExcelFunc: exportUserContributionRank,
+      exportExcelFunc: exportContributionRankInfo,
     })
 
     const { onSubmit, btnLoading } = useForm(search)
-    const integralRankRecordInfo = reactive<Partial<IntegralRankRecordInfo>>({})
-    const infoDialogVisible = ref(false)
-    function toLookInfo(info: IntegralRankRecordInfo) {
-      infoDialogVisible.value = true
-      Object.assign(integralRankRecordInfo, info)
-    }
+
+    watch(
+      () => {
+        return props.info
+      },
+      () => {
+        list.value = []
+        total.value = 0
+        onSubmit()
+      },
+      {
+        deep: true,
+      }
+    )
 
     return {
       list,
@@ -165,9 +167,6 @@ export default defineComponent({
       search,
       form,
       exportExcel,
-      infoDialogVisible,
-      toLookInfo,
-      integralRankRecordInfo,
     }
   },
 })

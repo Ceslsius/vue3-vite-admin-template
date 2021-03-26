@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:13:58
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 14:49:54
+ * @LastEditTime: 2021-03-26 11:57:59
  */
 
 import { nextTick, ref } from 'vue'
@@ -14,13 +14,21 @@ interface FormRef {
   clearValidate(): void
 }
 
-export function useForm(service: Function) {
+export function useForm(
+  service: Function,
+  options?: {
+    afterSubmit?: () => void
+  }
+) {
   const formRef = ref<FormRef>()
   const btnLoading = ref(false)
   async function request() {
     btnLoading.value = true
     try {
       await service()
+      if (options?.afterSubmit) {
+        options.afterSubmit()
+      }
     } finally {
       btnLoading.value = false
     }
@@ -30,7 +38,7 @@ export function useForm(service: Function) {
     await nextTick()
     if (formRef.value) {
       try {
-        const res = await formRef.value.validate()
+        await formRef.value.validate()
         request()
       } catch (error) {
         console.error(error)

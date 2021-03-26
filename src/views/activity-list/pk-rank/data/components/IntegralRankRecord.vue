@@ -3,10 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 17:14:36
+ * @LastEditTime: 2021-03-26 12:01:51
 -->
 <template>
-  <el-form :inline="true" class="demo-form-inline">
+  <el-form :inline="true" ref="formRef" class="demo-form-inline">
     <el-row type="flex" justify="space-between">
       <div>
         <el-form-item label="活动时间">
@@ -26,10 +26,12 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" :loading="btnLoading" @click="onSubmit">
+            搜索
+          </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">导出</el-button>
+          <el-button type="primary" @click="exportExcel">导出</el-button>
         </el-form-item>
       </div>
     </el-row>
@@ -47,10 +49,12 @@
     </el-table-column>
     <el-table-column label="操作" align="center">
       <template #default="scope">
-        <el-button type="text" @click="changeIntegral(scope)">
+        <el-button type="text" @click="changeIntegral(scope.row)">
           修改积分
         </el-button>
-        <el-button type="text" @click="scope.any"> 查看积分明细 </el-button>
+        <el-button type="text" @click="toLookInfo(scope.row)">
+          查看积分明细
+        </el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -71,36 +75,61 @@
     </div>
   </el-row>
 
-  <el-dialog title="提示" v-model="dialogVisible" width="30%">
-    <span>这是一段信息</span>
+  <el-dialog title="修改积分" v-model="dialogVisible" width="30%">
+    <el-form :inline="true" ref="scoreFormRef" class="demo-form-inline">
+      <el-form-item
+        label="积分"
+        :rules="{
+          required: true,
+          message: '请输入积分',
+          trigger: 'blur',
+        }"
+      >
+        <el-input placeholder="请输入积分" v-model.numer="scoreRef"></el-input>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
-          确 定
-        </el-button>
+        <el-button type="primary" @click="submitScore"> 确 定 </el-button>
       </span>
     </template>
+  </el-dialog>
+
+  <el-dialog
+    :title="`主播${integralRankRecordInfo.username}积分排行记录明细`"
+    v-model="infoDialogVisible"
+    width="80%"
+    top="5vh"
+  >
+    <IntegralRankInfo :info="integralRankRecordInfo" />
   </el-dialog>
 </template>
 
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
-import { defineComponent, reactive, ref, watch } from 'vue'
-import { getIntegralRankRecord } from '../api'
-
+import { ElMessage } from 'element-plus'
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
+import {
+  exportIntegralRank,
+  getIntegralRankRecord,
+  updateIntegral,
+} from '../api'
+import IntegralRankInfo from './IntegralRankInfo.vue'
 export default defineComponent({
   name: 'IntegralRankRecord',
-  components: {},
+  components: {
+    IntegralRankInfo,
+  },
   data() {
     return {}
   },
   setup() {
     const form = reactive({
       keyword: '',
-      start_time: '' as any,
-      end_time: '' as any,
+      start_time: '' as string | Date | number | undefined,
+      end_time: '' as string | Date | number | undefined,
     })
 
     const timeValue = ref<Date[]>([])
@@ -119,6 +148,20 @@ export default defineComponent({
         deep: true,
       }
     )
+    const tempForm = computed(() => {
+      let { start_time, end_time } = form
+      if (start_time instanceof Date) {
+        start_time = Math.floor(start_time.getTime() / 1000)
+      }
+      if (end_time instanceof Date) {
+        end_time = Math.floor(end_time.getTime() / 1000)
+      }
+      return {
+        ...form,
+        start_time,
+        end_time,
+      }
+    })
 
     const {
       list,
@@ -127,10 +170,40 @@ export default defineComponent({
       pageParams,
       total,
       sizeChange,
-    } = useTable(form, getIntegralRankRecord)
-    const { onSubmit, btnLoading } = useForm(search)
+      exportExcel,
+    } = useTable(tempForm, getIntegralRankRecord, {
+      exportExcelFunc: exportIntegralRank,
+      exportExcelName: '积分排行记录',
+    })
+
+    const { onSubmit, btnLoading, formRef } = useForm(search)
     const dialogVisible = ref(false)
-    function changeIntegral(info: any) {}
+    const scoreRef = ref(0)
+
+    const integralRankRecordInfo = reactive<Partial<IntegralRankRecordInfo>>({})
+    function changeIntegral(info: IntegralRankRecordInfo) {
+      scoreRef.value = info.score
+      Object.assign(integralRankRecordInfo, info)
+      dialogVisible.value = true
+    }
+    const infoDialogVisible = ref(false)
+    function toLookInfo(info: IntegralRankRecordInfo) {
+      infoDialogVisible.value = true
+      Object.assign(integralRankRecordInfo, info)
+    }
+
+    const {
+      onSubmit: submitScore,
+      btnLoading: scoreBtnLoading,
+      formRef: scoreFormRef,
+    } = useForm(async () => {
+      const { msg } = await updateIntegral({
+        score: scoreRef.value,
+        liveuid: integralRankRecordInfo.uid,
+      })
+      ElMessage.success(msg)
+      onSubmit()
+    })
 
     return {
       list,
@@ -145,6 +218,15 @@ export default defineComponent({
       form,
       dialogVisible,
       changeIntegral,
+      exportExcel,
+      formRef,
+      infoDialogVisible,
+      toLookInfo,
+      integralRankRecordInfo,
+      scoreRef,
+      submitScore,
+      scoreBtnLoading,
+      scoreFormRef,
     }
   },
 })
