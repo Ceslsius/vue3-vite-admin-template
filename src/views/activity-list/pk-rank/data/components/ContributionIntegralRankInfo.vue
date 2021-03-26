@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 11:45:17
+ * @LastEditTime: 2021-03-26 12:18:32
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item label="关键字">
           <el-input
-            placeholder="用户昵称、用户ID"
+            placeholder="主播昵称、主播ID"
             v-model="form.keyword"
           ></el-input>
         </el-form-item>
@@ -36,19 +36,19 @@
   </el-form>
 
   <el-table :data="list.value" class="mt-15" height="70vh" style="width: 100%">
-    <el-table-column prop="id" label="记录ID" align="center"> </el-table-column>
-    <el-table-column prop="uid" label="用户ID" align="center">
+    <el-table-column prop="uid" label="主播ID" align="center">
     </el-table-column>
-    <el-table-column prop="user_number" label="用户编号" align="center">
+    <el-table-column prop="user_number" label="主播编号" align="center">
     </el-table-column>
-    <el-table-column prop="username" label="用户昵称" align="center">
+    <el-table-column prop="username" label="主播昵称" align="center">
     </el-table-column>
-    <el-table-column prop="score" label="当前积分" align="center">
+    <el-table-column prop="giftname" label="礼物名称" align="center">
     </el-table-column>
-    <el-table-column label="操作" align="center">
-      <template #default="scope">
-        <el-button type="text" @click="scope.any"> 查看积分明细 </el-button>
-      </template>
+    <el-table-column prop="gift_num" label="礼物数量" align="center">
+    </el-table-column>
+    <el-table-column prop="created_at" label="收礼物时间" align="center">
+    </el-table-column>
+    <el-table-column prop="contribution" label="贡献积分" align="center">
     </el-table-column>
   </el-table>
 

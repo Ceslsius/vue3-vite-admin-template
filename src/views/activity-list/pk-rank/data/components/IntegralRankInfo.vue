@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 11:40:38
+ * @LastEditTime: 2021-03-26 12:14:48
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -54,7 +54,8 @@
     <el-table-column prop="to_username" label="对方主播昵称" align="center">
     </el-table-column>
     <el-table-column prop="to_pk_value" label="对方PK值" align="center">
-      <!-- <el-table-column prop="to_pk_value" label="对方PK值" align="center"> -->
+    </el-table-column>
+    <el-table-column prop="pk_start_time" label="pk时间" align="center">
     </el-table-column>
   </el-table>
 
