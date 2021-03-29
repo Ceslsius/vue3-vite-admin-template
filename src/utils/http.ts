@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-09-04 17:13:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 09:45:11
+ * @LastEditTime: 2021-03-29 10:15:36
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { apiMock, baseURL, mockBaseURL, SECRET_KEY } from '@/config'
@@ -69,7 +69,6 @@ export function serviceFulfilled(response: AxiosResponse) {
           redirect: window.location.hash.slice(1),
         },
       })
-      ElMessage(data.msg)
       return Promise.reject(data)
     } else {
       ElMessage(data.msg)
