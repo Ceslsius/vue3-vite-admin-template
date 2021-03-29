@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 20:33:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:21:48
+ * @LastEditTime: 2021-03-29 10:53:00
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -23,10 +23,13 @@
           <el-input
             placeholder="活动名称、活动编号"
             v-model="form.keyword"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">搜索</el-button>
+          <el-button type="primary" :loading="btnLoading" @click="onSubmit">
+            搜索
+          </el-button>
         </el-form-item>
       </div>
       <el-form-item>
@@ -36,7 +39,7 @@
   </el-form>
 
   <el-table :data="list.value" class="mt-15" height="70vh" style="width: 100%">
-    <el-table-column prop="id" label="活动编号" align="center">
+    <el-table-column prop="code" label="活动编号" align="center">
     </el-table-column>
     <el-table-column prop="name" label="活动名称" align="center">
     </el-table-column>

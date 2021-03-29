@@ -3,9 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:31
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:13:20
+ * @LastEditTime: 2021-03-29 11:35:10
  */
 import { service } from '@/utils/http'
+import md5 from 'js-md5'
 
 export function getActivityConfig(
   params: GetActivityConfigParams
@@ -43,7 +44,11 @@ export function login(data: {
     token: string
   }
 }> {
-  return service.post('/backend/admin/login', data)
+  const password = md5('rCt52pF2cnnKNB3Hkp' + data.password)
+  return service.post('/backend/admin/login', {
+    ...data,
+    password,
+  })
 }
 
 export function logout() {

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 18:36:10
+ * @LastEditTime: 2021-03-29 10:52:03
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -55,9 +55,23 @@
     </el-table-column>
     <el-table-column prop="to_pk_value" label="对方PK值" align="center">
     </el-table-column>
-    <el-table-column prop="pk_start_time" label="pk时间" align="center">
+    <el-table-column prop="change_score" label="积分变化" align="center">
+    </el-table-column>
+    <el-table-column
+      prop="pk_start_time"
+      label="pk时间"
+      align="center"
+      width="180"
+    >
       <template #default="scope">
-        <div>{{ scope.row.pk_start_time }}</div>
+        <div>
+          {{
+            dateFormat(
+              'YYYY-MM-dd hh:mm:ss',
+              new Date(scope.row.pk_start_time * 1000)
+            )
+          }}
+        </div>
       </template>
     </el-table-column>
   </el-table>
@@ -84,6 +98,7 @@ import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
 import { computed, defineComponent, PropType, reactive, ref, watch } from 'vue'
 import { exportIntegralRankInfo, getIntegralRankInfo } from '../api'
+import { dateFormat } from '@/utils/index'
 
 export default defineComponent({
   name: 'IntegralRankRecord',
@@ -176,6 +191,7 @@ export default defineComponent({
       form,
       exportExcel,
       formRef,
+      dateFormat,
     }
   },
 })
