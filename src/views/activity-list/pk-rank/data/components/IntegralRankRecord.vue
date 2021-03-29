@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 15:27:47
+ * @LastEditTime: 2021-03-29 15:52:44
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -192,6 +192,7 @@ export default defineComponent({
       scoreForm.score = info.score
       Object.assign(integralRankRecordInfo, info)
       dialogVisible.value = true
+      scoreFormRef.value?.clearValidate()
     }
     const infoDialogVisible = ref(false)
     function toLookInfo(info: IntegralRankRecordInfo) {

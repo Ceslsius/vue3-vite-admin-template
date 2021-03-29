@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:23:45
+ * @LastEditTime: 2021-03-29 15:54:53
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/index/record.vue'),
         name: 'record',
         meta: {
-          title: '活动记录',
+          title: '活动列表',
           icon: 'el-icon-s-data',
           affix: true,
         },
@@ -89,7 +89,7 @@ const routes: RouteRecordRaw[] = [
       },
     ],
     meta: {
-      title: '活动列表',
+      title: '活动配置',
       affix: true,
     },
   },
