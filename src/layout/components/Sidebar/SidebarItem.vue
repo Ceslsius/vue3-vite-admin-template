@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 18:01:20
+ * @LastEditTime: 2021-03-29 00:37:25
 -->
 <template>
   <div
@@ -25,7 +25,10 @@
         >
           <i
             class="submenu-icon"
-            :class="(item.meta && item.meta.icon) || 'el-icon-location'"
+            :class="
+              (theOnlyOneChild.meta && theOnlyOneChild.meta.icon) ||
+              'el-icon-s-tools'
+            "
           ></i>
           <template #title>
             <span v-if="theOnlyOneChild.meta.title">{{
@@ -39,7 +42,7 @@
       <template #title>
         <i
           class="submenu-icon"
-          :class="(item.meta && item.meta.icon) || 'el-icon-location'"
+          :class="(item.meta && item.meta.icon) || 'el-icon-s-tools'"
         ></i>
         <template v-if="item.meta && item.meta.title">
           <span>{{ item.meta.title }}</span>
@@ -187,9 +190,15 @@ export default defineComponent({
   color: #fff;
 }
 
-.simple-mode {
+.el-submenu {
   .submenu-icon {
     margin-left: 20px;
+  }
+}
+.el-popper,
+.full-mode {
+  .submenu-icon {
+    margin-left: 0;
   }
 }
 </style>

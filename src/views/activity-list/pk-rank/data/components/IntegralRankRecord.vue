@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 12:01:51
+ * @LastEditTime: 2021-03-26 18:37:07
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -11,7 +11,7 @@
       <div>
         <el-form-item label="活动时间">
           <el-date-picker
-            type="datetimerange"
+            type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -76,7 +76,7 @@
   </el-row>
 
   <el-dialog title="修改积分" v-model="dialogVisible" width="30%">
-    <el-form :inline="true" ref="scoreFormRef" class="demo-form-inline">
+    <el-form :inline="true" ref="scoreFormRef">
       <el-form-item
         label="积分"
         :rules="{
@@ -202,6 +202,7 @@ export default defineComponent({
         liveuid: integralRankRecordInfo.uid,
       })
       ElMessage.success(msg)
+      dialogVisible.value = false
       onSubmit()
     })
 

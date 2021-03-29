@@ -3,11 +3,12 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:16:44
+ * @LastEditTime: 2021-03-29 09:56:30
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
 import Layout from '@/layout/index.vue'
+import { adminStorage } from '@/utils'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -25,7 +26,11 @@ const routes: RouteRecordRaw[] = [
         path: 'record',
         component: () => import('@/views/index/record.vue'),
         name: 'record',
-        meta: { title: '活动记录', affix: true },
+        meta: {
+          title: '活动记录',
+          icon: 'el-icon-s-data',
+          affix: true,
+        },
       },
     ],
     meta: { title: '活动管理', affix: true },
@@ -39,7 +44,10 @@ const routes: RouteRecordRaw[] = [
         path: 'pk-rank',
         component: () => import('@/views/activity-list/pk-rank/index.vue'),
         name: 'test1',
-        meta: { title: 'PK排位赛', affix: true },
+        meta: {
+          title: 'PK排位赛',
+          affix: true,
+        },
         redirect: '/activity-list/pk-rank/parameter-config',
         children: [
           {
@@ -49,26 +57,41 @@ const routes: RouteRecordRaw[] = [
                 '@/views/activity-list/pk-rank/parameter-config/index.vue'
               ),
             name: 'parameter-config',
-            meta: { title: '参数配置', affix: true },
+            meta: {
+              title: '参数配置',
+              icon: 'el-icon-s-tools',
+              affix: true,
+            },
           },
           {
             path: 'reward-config',
             component: () =>
               import('@/views/activity-list/pk-rank/reward-config/index.vue'),
             name: 'reward-config',
-            meta: { title: '奖励配置', affix: true },
+            meta: {
+              title: '奖励配置',
+              icon: 'el-icon-s-tools',
+              affix: true,
+            },
           },
           {
             path: 'data',
             component: () =>
               import('@/views/activity-list/pk-rank/data/index.vue'),
             name: 'pk-rank-data',
-            meta: { title: '活动数据', affix: true },
+            meta: {
+              title: '活动数据',
+              icon: 'el-icon-s-data',
+              affix: true,
+            },
           },
         ],
       },
     ],
-    meta: { title: '活动列表', affix: true },
+    meta: {
+      title: '活动列表',
+      affix: true,
+    },
   },
   {
     path: '/login',
@@ -79,4 +102,18 @@ const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   routes,
   history: createWebHashHistory(),
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth === false) {
+    next()
+  } else if (!adminStorage.getItem('token')) {
+    next({
+      path: '/login',
+      query: {
+        redirect: to.fullPath,
+      },
+    })
+    next()
+  }
 })

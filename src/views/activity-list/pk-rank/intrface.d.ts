@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-25 14:20:19
+ * @LastEditTime: 2021-03-26 12:28:25
  */
 export interface PkBaseCofigData {
   /**
@@ -58,7 +58,6 @@ export interface PkAnchorRewarConfigInfo {
   avatar: {
     url: string
     time?: number
-    name: string
   }
   live_label: {
     url: string
@@ -86,6 +85,7 @@ export interface PkUserRewarConfigInfo {
     time?: number
     giftname?: string
     count?: number
+    url?: string
   }
 }
 

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:31
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 20:41:31
+ * @LastEditTime: 2021-03-28 23:29:33
  */
 import { service } from '@/utils/http'
 
@@ -31,4 +31,17 @@ export function getGiftList(): Res<{
   list: GiftInfo[]
 }> {
   return service.get('/backend/gift/list')
+}
+
+export function login(data: {
+  username: string
+  password: string
+}): Res<{
+  user_info: {
+    id: number
+    username: string
+    token: string
+  }
+}> {
+  return service.post('/backend/admin/login', data)
 }

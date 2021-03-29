@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 11:48:25
+ * @LastEditTime: 2021-03-26 18:37:14
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -11,7 +11,7 @@
       <div>
         <el-form-item label="活动时间">
           <el-date-picker
-            type="datetimerange"
+            type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"

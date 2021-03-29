@@ -11,7 +11,7 @@
       <div>
         <el-form-item label="活动时间">
           <el-date-picker
-            type="datetimerange"
+            type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"

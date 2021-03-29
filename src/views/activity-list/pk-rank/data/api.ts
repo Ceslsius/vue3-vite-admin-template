@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-23 14:44:31
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 12:00:56
+ * @LastEditTime: 2021-03-26 18:25:01
  */
 
 import { service } from '@/utils/http'
@@ -71,5 +71,5 @@ export function exportUserContributionRank(params: any) {
   })
 }
 export function updateIntegral(data: { score: number; liveuid?: number }): Res {
-  return service.post('/backend/integral/update', data)
+  return service.post('/backend/pk/integral/update', data)
 }

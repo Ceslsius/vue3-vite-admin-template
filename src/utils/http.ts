@@ -3,12 +3,14 @@
  * @Author: Yi Yunwan
  * @Date: 2020-09-04 17:13:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 10:16:30
+ * @LastEditTime: 2021-03-29 09:45:11
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { apiMock, baseURL, mockBaseURL, SECRET_KEY } from '@/config'
 import { ElMessage } from 'element-plus'
 import md5 from 'js-md5'
+import { router } from '@/router'
+import { adminStorage } from '.'
 
 export const service = axios.create({
   baseURL,
@@ -58,6 +60,15 @@ export function serviceFulfilled(response: AxiosResponse) {
     if (data.code == '200') {
       return response.data
     } else if (data.code == '100003') {
+      adminStorage.delete('token')
+      adminStorage.delete('uid')
+      adminStorage.delete('username')
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: window.location.hash.slice(1),
+        },
+      })
       ElMessage(data.msg)
       return Promise.reject(data)
     } else {
@@ -93,6 +104,13 @@ export function addSign(config: AxiosRequestConfig) {
   config.headers['sign'] = sign
   return config
 }
+
+function addAuthorization(config: AxiosRequestConfig) {
+  const Authorization = adminStorage.getItem('token')
+  Authorization && (config.headers['Authorization'] = Authorization)
+  return config
+}
 service.interceptors.request.use(addSign)
 service.interceptors.request.use(useMock)
+service.interceptors.request.use(addAuthorization)
 service.interceptors.response.use(serviceFulfilled, serviceRejected)

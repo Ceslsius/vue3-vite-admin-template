@@ -1,62 +1,89 @@
 <template>
   <div class="login-container">
     <el-form
-      ref="loginForm"
+      ref="formRef"
       class="login-form"
       autocomplete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">TakTak活动系统</h3>
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container"> </span>
         <el-input
-          ref="username"
-          name="username"
           type="text"
           autocomplete="on"
-          placeholder="username"
+          prefix-icon="el-icon-user-solid"
+          placeholder="请输入账号"
+          v-model="form.username"
         />
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container"> </span>
         <el-input
-          ref="password"
-          placeholder="password"
-          name="password"
+          prefix-icon="el-icon-user-solid"
+          placeholder="请输入密码"
           autocomplete="on"
+          v-model="form.password"
         />
         <span class="show-pwd"> </span>
       </el-form-item>
 
-      <el-button type="primary" style="width: 100%; margin-bottom: 30px">
-        登录
+      <el-button
+        type="primary"
+        :loading="btnLoading"
+        @click="onSubmit"
+        @keyup.enter="onSubmit"
+        style="width: 100%; margin-bottom: 30px"
+      >
+        {{ btnLoading ? '登录中' : '登录' }}
       </el-button>
-
-      <div style="position: relative">
-        <div class="tips">
-          <span> username: admin </span>
-          <span> password: any </span>
-        </div>
-      </div>
     </el-form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { login } from '@/api'
+import { useForm } from '@/use/useForm'
+import { adminStorage } from '@/utils'
+import { defineComponent, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'App',
   data() {
     return {
       passwordType: '',
+      username: '',
+      password: '',
     }
   },
   methods: {},
+  setup() {
+    const form = reactive({
+      username: '',
+      password: '',
+    })
+    const router = useRouter()
+    const route = useRoute()
+
+    const { formRef, btnLoading, onSubmit } = useForm(async () => {
+      const { data } = await login(form)
+      adminStorage.setItem('token', data.user_info.token)
+      adminStorage.setItem('uid', data.user_info.id)
+      adminStorage.setItem('username', data.user_info.username)
+      router.replace({
+        path: (route.query.redirect as string) || '/',
+      })
+    })
+    return {
+      formRef,
+      btnLoading,
+      onSubmit,
+      form,
+    }
+  },
 })
 </script>
 
@@ -84,7 +111,6 @@ export default defineComponent({
       background: transparent;
       border: 0px;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
       color: $lightGray;
       caret-color: $loginCursorColor;
       -webkit-appearance: none;
@@ -114,31 +140,11 @@ export default defineComponent({
 
   .login-form {
     position: relative;
-    width: 520px;
+    width: 420px;
     max-width: 100%;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-  }
-
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    // color: $darkGray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
   }
 
   .title-container {
@@ -151,16 +157,6 @@ export default defineComponent({
       text-align: center;
       font-weight: bold;
     }
-  }
-
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    // color: $darkGray;
-    cursor: pointer;
-    user-select: none;
   }
 }
 </style>

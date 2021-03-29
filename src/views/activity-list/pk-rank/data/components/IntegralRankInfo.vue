@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 12:14:48
+ * @LastEditTime: 2021-03-26 18:36:10
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -11,7 +11,7 @@
       <div>
         <el-form-item label="活动时间">
           <el-date-picker
-            type="datetimerange"
+            type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -56,6 +56,9 @@
     <el-table-column prop="to_pk_value" label="对方PK值" align="center">
     </el-table-column>
     <el-table-column prop="pk_start_time" label="pk时间" align="center">
+      <template #default="scope">
+        <div>{{ scope.row.pk_start_time }}</div>
+      </template>
     </el-table-column>
   </el-table>
 

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-14 21:28:06
+ * @LastEditTime: 2021-03-29 09:44:55
 -->
 <template>
   <div class="navbar">
@@ -14,6 +14,28 @@
       @toggle-click="setSidebar(!sidebar)"
     />
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <div class="right-menu">
+      <el-dropdown>
+        <div class="avatar-wrapper">
+          <span class="mr-5">{{ username }}</span>
+          <!-- <el-image class="user-avatar" :src="avatar" fit="contain">
+            <template #error>
+              <div class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </template>
+          </el-image> -->
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>
+              <div @click="logout">退出登录</div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
@@ -21,7 +43,9 @@
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import { useSidebar } from '@/use/useSidebar'
+import { adminStorage } from '@/utils'
 import { defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'Navbar',
@@ -31,11 +55,26 @@ export default defineComponent({
   },
   setup() {
     const { sidebar, setSidebar } = useSidebar()
-    const avatar = ''
+    const username = adminStorage.getItem('username')
+    const router = useRouter()
+    const route = useRoute()
+
+    function logout() {
+      adminStorage.delete('token')
+      adminStorage.delete('uid')
+      adminStorage.delete('username')
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: route.fullPath,
+        },
+      })
+    }
     return {
       sidebar,
       setSidebar,
-      avatar,
+      logout,
+      username,
     }
   },
 })
@@ -71,6 +110,7 @@ export default defineComponent({
     float: right;
     height: 100%;
     line-height: 50px;
+    margin-right: 30px;
 
     &:focus {
       outline: none;

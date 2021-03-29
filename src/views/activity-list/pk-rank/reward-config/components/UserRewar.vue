@@ -1,18 +1,103 @@
 <!--
  * @Descripttion: 
  * @Author: Yi Yunwan
- * @Date: 2021-03-24 16:24:48
+ * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:24:49
+ * @LastEditTime: 2021-03-26 18:19:28
 -->
 <template>
-  <div></div>
+  <div>
+    <el-table
+      :data="userRewarTableForm"
+      :span-method="objectSpanMethod"
+      border
+      style="width: 100%; margin-top: 20px"
+    >
+      <el-table-column prop="label" label="名次" align="center">
+      </el-table-column>
+      <el-table-column prop="name" label="奖励类型" align="center">
+      </el-table-column>
+      <el-table-column prop="count" label="奖项值" align="center">
+        <template #default="scope">
+          <div
+            v-if="
+              typeof scope.row.count === 'string' &&
+              scope.row.count.includes('http')
+            "
+          >
+            <el-image
+              class="form-image"
+              :src="scope.row.count"
+              fit="contain"
+              :preview-src-list="[scope.row.count]"
+            ></el-image>
+          </div>
+          <div v-else>{{ scope.row.count }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="time" label="使用时长" align="center">
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template #default>
+          <el-button type="text"> 修改 </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { useGiftList } from '@/use/useGiftList'
+import { defineComponent, nextTick, PropType } from 'vue'
+import { PkAnchorRewarConfig } from '../../intrface'
+import { usePkRankSetting } from '../../use/usePkRankSetting'
+import {
+  useAnchorRewarTableForm,
+  usePkAnchorRewarConfig,
+  usePkUserRewarConfig,
+  useUserRewardTableForm,
+} from '../use'
 export default defineComponent({
-  name: '',
+  name: 'UserRewar',
+
+  methods: {
+    objectSpanMethod({ row, column, rowIndex, columnIndex }: any) {
+      if (columnIndex === 0) {
+        if (rowIndex === 0) {
+          return {
+            rowspan: 3,
+            colspan: 1,
+          }
+        } else if (rowIndex > 2 && (rowIndex - 1) % 2 === 0) {
+          return {
+            rowspan: 2,
+            colspan: 1,
+          }
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0,
+          }
+        }
+      }
+    },
+  },
+  setup(props) {
+    const { anchorReward } = usePkRankSetting(async () => {
+      if (Object.keys(anchorReward).length) {
+        Object.assign(
+          pkAnchorRewarConfig,
+          JSON.parse(JSON.stringify(anchorReward))
+        )
+      }
+    })
+    const { pkAnchorRewarConfig } = usePkAnchorRewarConfig(anchorReward)
+
+    const { giftList } = useGiftList()
+
+    const { userRewarTableForm } = useUserRewardTableForm(anchorReward as any)
+    return { userRewarTableForm }
+  },
 })
 </script>
 
