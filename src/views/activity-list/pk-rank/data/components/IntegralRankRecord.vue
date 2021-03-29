@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 18:37:07
+ * @LastEditTime: 2021-03-29 12:09:46
 -->
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
@@ -76,16 +76,21 @@
   </el-row>
 
   <el-dialog title="修改积分" v-model="dialogVisible" width="30%">
-    <el-form :inline="true" ref="scoreFormRef">
+    <el-form :inline="true" ref="scoreFormRef" :model="scoreForm">
       <el-form-item
         label="积分"
+        prop="score"
         :rules="{
           required: true,
           message: '请输入积分',
           trigger: 'blur',
         }"
       >
-        <el-input placeholder="请输入积分" v-model.numer="scoreRef"></el-input>
+        <el-input
+          placeholder="请输入积分"
+          type="number"
+          v-model.numer="scoreForm.score"
+        ></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -178,11 +183,13 @@ export default defineComponent({
 
     const { onSubmit, btnLoading, formRef } = useForm(search)
     const dialogVisible = ref(false)
-    const scoreRef = ref(0)
+    const scoreForm = reactive({
+      score: 0,
+    })
 
     const integralRankRecordInfo = reactive<Partial<IntegralRankRecordInfo>>({})
     function changeIntegral(info: IntegralRankRecordInfo) {
-      scoreRef.value = info.score
+      scoreForm.score = info.score
       Object.assign(integralRankRecordInfo, info)
       dialogVisible.value = true
     }
@@ -198,7 +205,7 @@ export default defineComponent({
       formRef: scoreFormRef,
     } = useForm(async () => {
       const { msg } = await updateIntegral({
-        score: scoreRef.value,
+        score: scoreForm.score,
         liveuid: integralRankRecordInfo.uid,
       })
       ElMessage.success(msg)
@@ -224,10 +231,10 @@ export default defineComponent({
       infoDialogVisible,
       toLookInfo,
       integralRankRecordInfo,
-      scoreRef,
       submitScore,
       scoreBtnLoading,
       scoreFormRef,
+      scoreForm,
     }
   },
 })
