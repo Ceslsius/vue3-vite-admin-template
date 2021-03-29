@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 19:53:06
+ * @LastEditTime: 2021-03-29 17:03:24
 -->
 <template>
   <div>
@@ -13,7 +13,7 @@
       :collapse="isCollapse"
       background-color="#2b303b"
       text-color="#fff"
-      active-text-color="#ffd04b"
+      active-text-color="#1890ff"
     >
       <SidebarItem
         v-for="(route, index) in routes"

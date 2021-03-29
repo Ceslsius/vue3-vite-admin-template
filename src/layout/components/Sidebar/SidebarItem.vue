@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 00:37:25
+ * @LastEditTime: 2021-03-29 17:16:29
 -->
 <template>
   <div
@@ -181,6 +181,16 @@ export default defineComponent({
 }
 .el-submenu__title i {
   color: #fff !important;
+}
+.is-opened {
+  .el-submenu__title,
+  .el-menu,
+  .el-menu-item {
+    background: #202430 !important;
+    &:hover {
+      background: #13151a !important;
+    }
+  }
 }
 </style>
 
