@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 15:28:05
+ * @LastEditTime: 2021-03-29 16:41:11
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -73,6 +73,7 @@
   <el-dialog
     :title="`用户${integralRankRecordInfo.username}积分排行记录明细`"
     v-model="infoDialogVisible"
+    :destroy-on-close="true"
     width="80%"
     top="5vh"
   >
