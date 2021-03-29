@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 12:01:54
+ * @LastEditTime: 2021-03-29 15:28:05
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item label="关键字">
           <el-input
-            placeholder="用户昵称、用户ID"
+            placeholder="用户昵称、用户编号"
             v-model="form.keyword"
           ></el-input>
         </el-form-item>
