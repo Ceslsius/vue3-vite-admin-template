@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 09:56:30
+ * @LastEditTime: 2021-03-29 10:09:35
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -96,6 +96,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     component: Login,
+    meta: {
+      auth: false,
+    },
   },
 ]
 
@@ -105,8 +108,9 @@ export const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.auth === false) {
+  if (to.meta?.auth === false) {
     next()
+    return
   } else if (!adminStorage.getItem('token')) {
     next({
       path: '/login',
@@ -114,6 +118,7 @@ router.beforeEach((to, from, next) => {
         redirect: to.fullPath,
       },
     })
-    next()
+    return
   }
+  next()
 })

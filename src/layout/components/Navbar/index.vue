@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 09:44:55
+ * @LastEditTime: 2021-03-29 10:15:14
 -->
 <template>
   <div class="navbar">
@@ -30,7 +30,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>
-              <div @click="logout">退出登录</div>
+              <div @click="toLogout">退出登录</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts">
+import { logout } from '@/api'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import { useSidebar } from '@/use/useSidebar'
@@ -59,7 +60,8 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
 
-    function logout() {
+    async function toLogout() {
+      await logout()
       adminStorage.delete('token')
       adminStorage.delete('uid')
       adminStorage.delete('username')
@@ -73,7 +75,7 @@ export default defineComponent({
     return {
       sidebar,
       setSidebar,
-      logout,
+      toLogout,
       username,
     }
   },

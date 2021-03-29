@@ -23,6 +23,7 @@
       <el-form-item prop="password">
         <el-input
           prefix-icon="el-icon-user-solid"
+          type="password"
           placeholder="请输入密码"
           autocomplete="on"
           v-model="form.password"
@@ -104,7 +105,6 @@ export default defineComponent({
   .el-input {
     display: inline-block;
     height: 47px;
-    width: 85%;
 
     input {
       height: 47px;

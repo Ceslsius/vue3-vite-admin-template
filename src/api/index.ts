@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:31
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-28 23:29:33
+ * @LastEditTime: 2021-03-29 10:13:20
  */
 import { service } from '@/utils/http'
 
@@ -44,4 +44,8 @@ export function login(data: {
   }
 }> {
   return service.post('/backend/admin/login', data)
+}
+
+export function logout() {
+  return service.post('/backend/admin/logout')
 }
