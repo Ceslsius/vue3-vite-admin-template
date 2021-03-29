@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:09:35
+ * @LastEditTime: 2021-03-29 10:23:45
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -98,6 +98,7 @@ const routes: RouteRecordRaw[] = [
     component: Login,
     meta: {
       auth: false,
+      hidden: true,
     },
   },
 ]
