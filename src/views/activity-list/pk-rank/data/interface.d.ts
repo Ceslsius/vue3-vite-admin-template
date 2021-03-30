@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-23 14:44:48
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 11:44:09
+ * @LastEditTime: 2021-03-30 12:10:55
  */
 interface IntegralRankRecordInfo {
   id: string
@@ -11,6 +11,7 @@ interface IntegralRankRecordInfo {
   user_number: string
   username: string
   score: number
+  code: string
 }
 
 interface ContributionRankInfo {
@@ -19,4 +20,5 @@ interface ContributionRankInfo {
   user_number: string
   username: string
   score: number
+  code: string
 }

@@ -145,6 +145,7 @@ export default defineComponent({
       }
       return {
         ...form,
+        code: props.info.code,
         start_time,
         end_time,
         uid: props.info.uid,

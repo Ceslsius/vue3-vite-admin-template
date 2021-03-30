@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 11:34:16
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 12:03:08
+ * @LastEditTime: 2021-03-30 12:11:38
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -120,6 +120,7 @@ export default defineComponent({
       }
       return {
         ...form,
+        code: props.info.code,
         start_time,
         uid: props.info.uid,
         end_time,
