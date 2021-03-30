@@ -185,12 +185,13 @@ export default defineComponent({
         })
         item.giftname = temp?.giftname
         item.url = temp?.url
+        item.mark = temp?.mark
       })
       const { msg } = await setPkContributionConfig(temp as any)
       ElMessage.success(msg)
       clearFormCache()
     })
-    const { giftList } = useGiftList()
+    const { giftList } = useGiftList(1)
 
     return {
       addList,

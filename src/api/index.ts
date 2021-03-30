@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:31
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 11:35:10
+ * @LastEditTime: 2021-03-30 18:19:00
  */
 import { service } from '@/utils/http'
 import md5 from 'js-md5'
@@ -26,12 +26,19 @@ export function uploadFile(image: File) {
 
 /**
  * 礼物列表 - 不包含幸运礼物
+ * 0 不含幸运礼物，1包含幸运礼物
  * @returns
  */
-export function getGiftList(): Res<{
+export function getGiftList(
+  type: 0 | 1
+): Res<{
   list: GiftInfo[]
 }> {
-  return service.get('/backend/gift/list')
+  return service.get('/backend/gift/list', {
+    params: {
+      type,
+    },
+  })
 }
 
 export function login(data: {

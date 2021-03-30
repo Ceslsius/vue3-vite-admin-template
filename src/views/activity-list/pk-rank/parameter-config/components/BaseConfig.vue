@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-22 18:01:50
+ * @LastEditTime: 2021-03-30 17:12:05
 -->
 <template>
   <div style="">
@@ -35,7 +35,7 @@
         <el-col :span="16">
           <span class="form-item-tips">
             <i class="el-icon-info"></i>
-            1-1000正正数
+            1-1000正整数
           </span>
         </el-col>
       </el-row>
@@ -59,7 +59,7 @@
         <el-col :span="16">
           <span class="form-item-tips">
             <i class="el-icon-info"></i>
-            1-1000正正数
+            1-1000正整数
           </span>
         </el-col>
       </el-row>

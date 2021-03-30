@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 16:04:41
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 17:34:18
+ * @LastEditTime: 2021-03-30 18:23:29
  */
 
 interface GetActivityConfigParams {
@@ -28,4 +28,8 @@ interface GiftInfo {
   id: number
   giftname: string
   url: string
+  /**
+   * 3为幸运礼物
+   */
+  mark: number
 }
