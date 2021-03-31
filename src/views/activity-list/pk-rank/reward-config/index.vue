@@ -3,7 +3,7 @@
  @Author: Yi Yunwan
  @Date: 2021-03-15 11:33:57
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 12:31:29
+ * @LastEditTime: 2021-03-31 17:56:18
 -->
 <template>
   <!-- <AnchorRewar /> -->
@@ -455,6 +455,7 @@ export default defineComponent({
         return item.id === pkUserRewarConfig[key].gift.id
       })
       pkUserRewarConfig[key].gift.giftname = temp?.giftname
+      pkUserRewarConfig[key].gift.url = temp?.url
     }
 
     return {
