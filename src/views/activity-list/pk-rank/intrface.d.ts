@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 15:27:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-30 18:24:06
+ * @LastEditTime: 2021-04-01 15:30:09
  */
 export interface PkBaseCofigData {
   /**
@@ -57,7 +57,7 @@ export interface PkAnchorRewarConfig {
 export interface PkAnchorRewarConfigInfo {
   avatar: {
     url: string
-    name: string
+    name?: string
     time?: number
   }
   live_label: {

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:15:14
+ * @LastEditTime: 2021-04-01 18:03:00
 -->
 <template>
   <div class="navbar">
@@ -89,6 +89,9 @@ export default defineComponent({
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 99;
 
   .hamburger-container {
     line-height: 46px;

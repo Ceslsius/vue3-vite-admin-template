@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-09-04 10:59:42
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-15 14:16:17
+ * @LastEditTime: 2021-04-01 15:01:59
  */
 module.exports = {
   root: true,
@@ -11,11 +11,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/typescript/recommended',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint',
+    'prettier',
   ],
   parserOptions: {
     ecmaVersion: 2020,
