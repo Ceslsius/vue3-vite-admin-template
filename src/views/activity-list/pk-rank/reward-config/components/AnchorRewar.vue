@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-02 09:42:05
+ * @LastEditTime: 2021-04-02 11:20:11
 -->
 <template>
   <div>
@@ -59,27 +59,25 @@
   </div>
 
   <el-dialog title="主播端配置修改" v-model="visibleRef" width="40%">
-    <el-form ref="formRef" :model="pkAnchorRewarConfig" label-width="110px">
-      <el-row type="flex" v-if="type === 'avatar'">
+    <el-form ref="formRef" :model="form" label-width="110px">
+      <el-row type="flex" v-if="type === 'avatar' && form.avatar">
         <el-col :span="14">
           <el-form-item
             label="头像框"
-            :prop="`${lebelKey}.avatar.url`"
+            :prop="`avatar.url`"
             :rules="{
               required: true,
               message: '请上传头像框',
               trigger: 'blur',
             }"
           >
-            <ImageUpload
-              v-model:url="pkAnchorRewarConfig[lebelKey].avatar.url"
-            />
+            <ImageUpload v-model:url="form.avatar.url" />
           </el-form-item>
         </el-col>
         <el-col :span="14">
           <el-form-item
             label="头像框名"
-            :prop="`${lebelKey}.avatar.name`"
+            :prop="`avatar.name`"
             :rules="{
               required: true,
               message: '请输入头像框名',
@@ -87,7 +85,7 @@
             }"
           >
             <el-input
-              v-model.number="pkAnchorRewarConfig[lebelKey].avatar.name"
+              v-model.number="form.avatar.name"
               placeholder="请输入头像框名"
             ></el-input>
           </el-form-item>
@@ -96,11 +94,11 @@
           <el-form-item
             label="使用时长"
             :rules="useTimeRules"
-            :prop="`${lebelKey}.avatar.time`"
+            :prop="`avatar.time`"
           >
             <el-input
               type="number"
-              v-model.number="pkAnchorRewarConfig[lebelKey].avatar.time"
+              v-model.number="form.avatar.time"
               placeholder="请输入使用时长（单位天，1-1000正整数）"
             ></el-input>
           </el-form-item>
@@ -112,31 +110,29 @@
           </div>
         </el-col>
       </el-row>
-      <el-row type="flex" v-if="type === 'live_label'">
+      <el-row type="flex" v-if="type === 'live_label' && form.live_label">
         <el-col :span="14">
           <el-form-item
             label="直播封面标签"
-            :prop="`${lebelKey}.live_label.url`"
+            prop="live_label.url"
             :rules="{
               required: true,
               message: '请上传直播封面标签',
               trigger: 'blur',
             }"
           >
-            <ImageUpload
-              v-model:url="pkAnchorRewarConfig[lebelKey].live_label.url"
-            />
+            <ImageUpload v-model:url="form.live_label.url" />
           </el-form-item>
         </el-col>
         <el-col :span="14">
           <el-form-item
             label="使用时长"
             :rules="useTimeRules"
-            :prop="`${lebelKey}.live_label.time`"
+            prop="live_label.time"
           >
             <el-input
               type="number"
-              v-model.number="pkAnchorRewarConfig[lebelKey].live_label.time"
+              v-model.number="form.live_label.time"
               placeholder="请输入使用时长(单位天，1-1000正整数)"
             ></el-input>
           </el-form-item>
@@ -167,12 +163,12 @@
                 isInt: true,
               },
             ]"
-            :prop="`${lebelKey}.coin`"
+            :prop="`coin`"
           >
             <el-input
               type="number"
               placeholder="请输入T钻"
-              v-model.number="pkAnchorRewarConfig[lebelKey].coin"
+              v-model.number="form.coin"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -251,7 +247,15 @@ export default defineComponent({
     )
 
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await setPkAnchorRewarConfig(pkAnchorRewarConfig as any)
+      const { msg } = await setPkAnchorRewarConfig(
+        Object.assign(JSON.parse(JSON.stringify(pkAnchorRewarConfig)), {
+          [lebelKey.value]: form,
+        })
+      )
+      Object.assign(pkAnchorRewarConfig, {
+        [lebelKey.value]: JSON.parse(JSON.stringify(form)),
+      })
+
       ElMessage.success(msg)
       visibleRef.value = false
     })
@@ -265,6 +269,10 @@ export default defineComponent({
       lebelKey.value = info.lebelKey
       visibleRef.value = true
       formRef.value?.clearValidate()
+      Object.assign(
+        form,
+        JSON.parse(JSON.stringify(pkAnchorRewarConfig[info.lebelKey]))
+      )
     }
 
     const visibleRef = ref(false)
@@ -286,6 +294,7 @@ export default defineComponent({
       useTimeRules,
       visibleRef,
       numberCheck,
+      form,
     }
   },
 })

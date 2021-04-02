@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 17:00:35
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-01 17:37:39
+ * @LastEditTime: 2021-04-02 11:24:25
  */
 
 import { numberCheck } from '@/utils/check'
@@ -163,7 +163,7 @@ export function useUserRewardTableForm(config: PkUserRewarConfig) {
       },
       {
         label: '1',
-        lebelKey: 'second',
+        lebelKey: 'first',
         type: 'avatar',
         name: '头像框',
         count: config.first.avatar,
@@ -171,7 +171,7 @@ export function useUserRewardTableForm(config: PkUserRewarConfig) {
       },
       {
         label: '1',
-        lebelKey: 'second',
+        lebelKey: 'first',
         type: 'gift',
         name: '礼物',
         count: config.first.gift,
@@ -203,7 +203,7 @@ export function useUserRewardTableForm(config: PkUserRewarConfig) {
       },
       {
         label: '3',
-        lebelKey: 'four_to_ten',
+        lebelKey: 'three',
         type: 'gift',
         name: '礼物',
         count: config.three.gift,

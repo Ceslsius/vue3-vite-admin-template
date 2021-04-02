@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-01 18:53:17
+ * @LastEditTime: 2021-04-02 11:22:16
 -->
 <template>
   <div>
@@ -61,27 +61,25 @@
     </el-table>
 
     <el-dialog title="用户端配置修改" v-model="visibleRef" width="50%">
-      <el-form ref="formRef" :model="pkUserRewarConfig" label-width="110px">
-        <el-row type="flex" v-if="type === 'avatar'">
+      <el-form ref="formRef" :model="form" label-width="110px">
+        <el-row type="flex" v-if="type === 'avatar' && form.avatar">
           <el-col :span="14">
             <el-form-item
               label="头像框"
-              :prop="`${lebelKey}.avatar.url`"
+              prop="avatar.url"
               :rules="{
                 required: true,
                 message: '请上传头像框',
                 trigger: 'blur',
               }"
             >
-              <ImageUpload
-                v-model:url="pkUserRewarConfig[lebelKey].avatar.url"
-              />
+              <ImageUpload v-model:url="form.avatar.url" />
             </el-form-item>
           </el-col>
           <el-col :span="14">
             <el-form-item
               label="头像框名"
-              :prop="`${lebelKey}.avatar.name`"
+              prop="avatar.name"
               :rules="{
                 required: true,
                 message: '请输入头像框名',
@@ -89,7 +87,7 @@
               }"
             >
               <el-input
-                v-model.number="pkUserRewarConfig[lebelKey].avatar.name"
+                v-model.number="form.avatar.name"
                 placeholder="请输入头像框名"
               ></el-input>
             </el-form-item>
@@ -98,11 +96,11 @@
             <el-form-item
               label="使用时长"
               :rules="useTimeRules"
-              :prop="`${lebelKey}.avatar.time`"
+              :prop="`avatar.time`"
             >
               <el-input
                 type="number"
-                v-model.number="pkUserRewarConfig[lebelKey].avatar.time"
+                v-model.number="form.avatar.time"
                 placeholder="请输入使用时长（单位天，1-1000正整数）"
               ></el-input>
             </el-form-item>
@@ -118,7 +116,7 @@
           <el-col :span="14">
             <el-form-item
               label="会员"
-              :prop="`${lebelKey}.vip`"
+              :prop="`.vip`"
               :rules="[
                 {
                   required: true,
@@ -136,7 +134,7 @@
             >
               <el-input
                 type="number"
-                v-model.number="pkUserRewarConfig[lebelKey].vip"
+                v-model.number="form.vip"
                 placeholder="请输入会员使用时长"
               ></el-input>
             </el-form-item>
@@ -148,11 +146,11 @@
             </div>
           </el-col>
         </el-row>
-        <el-row type="flex" v-if="type === 'gift'">
+        <el-row type="flex" v-if="type === 'gift' && form.gift">
           <el-col :span="14">
             <el-form-item
               label="礼物"
-              :prop="`${lebelKey}.gift.id`"
+              :prop="`gift.id`"
               :rules="{
                 required: true,
                 message: '请选择礼物',
@@ -161,7 +159,7 @@
             >
               <el-select
                 style="width: 100%"
-                v-model="pkUserRewarConfig[lebelKey].gift.id"
+                v-model="form.gift.id"
                 @change="changeGift(lebelKey)"
                 placeholder="请选择礼物"
               >
@@ -184,12 +182,12 @@
           <el-col :span="14">
             <el-form-item
               label="礼物个数"
-              :prop="`${lebelKey}.gift.count`"
+              :prop="`gift.count`"
               :rules="useTimeRules"
             >
               <el-input
                 type="number"
-                v-model.number="pkUserRewarConfig[lebelKey].gift.count"
+                v-model.number="form.gift.count"
                 placeholder="请输入礼物个数（1-1000正整数）"
               ></el-input>
             </el-form-item>
@@ -197,12 +195,12 @@
           <el-col :span="14">
             <el-form-item
               label="使用时长"
-              :prop="`${lebelKey}.gift.time`"
+              :prop="`gift.time`"
               :rules="useTimeRules"
             >
               <el-input
                 type="number"
-                v-model.number="pkUserRewarConfig[lebelKey].gift.time"
+                v-model.number="form.gift.time"
                 placeholder="请输入使用时长（1-1000正整数）"
               ></el-input>
             </el-form-item>
@@ -232,7 +230,7 @@ import { useForm } from '@/use/useForm'
 import { useGiftList } from '@/use/useGiftList'
 import { numberCheck } from '@/utils/check'
 import { ElMessage } from 'element-plus'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { setPkUserRewarConfig } from '../../api'
 import { usePkRankSetting } from '../../use/usePkRankSetting'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
@@ -242,6 +240,7 @@ import {
   useTimeRules,
   useUserRewardTableForm,
 } from '../use'
+import { PkUserRewarConfigInfo } from '../../intrface'
 export default defineComponent({
   name: 'UserRewar',
   components: {
@@ -281,7 +280,14 @@ export default defineComponent({
     const { giftList } = useGiftList()
 
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
-      const { msg } = await setPkUserRewarConfig(pkUserRewarConfig as any)
+      const { msg } = await setPkUserRewarConfig(
+        Object.assign(JSON.parse(JSON.stringify(pkUserRewarConfig)), {
+          [lebelKey.value]: form,
+        })
+      )
+      Object.assign(pkUserRewarConfig, {
+        [lebelKey.value]: JSON.parse(JSON.stringify(form)),
+      })
       ElMessage.success(msg)
       visibleRef.value = false
     })
@@ -291,12 +297,15 @@ export default defineComponent({
     )
 
     function changeGift(key: string) {
+      if (!form.gift) return
       const temp = giftList.value.find((item) => {
         return item.id === pkUserRewarConfig[key].gift.id
       })
-      pkUserRewarConfig[key].gift.giftname = temp?.giftname
-      pkUserRewarConfig[key].gift.url = temp?.url
+      form.gift.giftname = temp?.giftname
+      form.gift.url = temp?.url
     }
+
+    const form = reactive<Partial<PkUserRewarConfigInfo>>({})
 
     const type = ref('')
     const lebelKey = ref('')
@@ -305,6 +314,10 @@ export default defineComponent({
       lebelKey.value = info.lebelKey
       visibleRef.value = true
       formRef.value?.clearValidate()
+      Object.assign(
+        form,
+        JSON.parse(JSON.stringify(pkUserRewarConfig[info.lebelKey]))
+      )
     }
 
     const visibleRef = ref(false)
@@ -327,6 +340,7 @@ export default defineComponent({
       lebelKey,
       useTimeRules,
       numberCheck,
+      form,
     }
   },
 })
