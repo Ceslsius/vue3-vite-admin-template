@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-01 18:51:02
+ * @LastEditTime: 2021-04-02 09:42:05
 -->
 <template>
   <div>
@@ -200,7 +200,7 @@
 <script lang="ts">
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { setPkAnchorRewarConfig } from '../../api'
 import { usePkRankSetting } from '../../use/usePkRankSetting'
 import { numberCheck } from '@/utils/check'
@@ -211,6 +211,7 @@ import {
   useTimeRules,
 } from '../use'
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
+import { PkAnchorRewarConfigInfo } from '../../intrface'
 
 export default defineComponent({
   name: 'AnchorRewar',
@@ -252,7 +253,10 @@ export default defineComponent({
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const { msg } = await setPkAnchorRewarConfig(pkAnchorRewarConfig as any)
       ElMessage.success(msg)
+      visibleRef.value = false
     })
+
+    const form = reactive<Partial<PkAnchorRewarConfigInfo>>({})
 
     const type = ref('')
     const lebelKey = ref('')

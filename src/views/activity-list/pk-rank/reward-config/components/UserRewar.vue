@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-01 18:51:27
+ * @LastEditTime: 2021-04-01 18:53:17
 -->
 <template>
   <div>
@@ -41,6 +41,9 @@
             ></el-image>
             <div>
               {{ scope.row.count.giftname || scope.row.count.name }}
+              <span v-if="scope.row.count.count">
+                *{{ scope.row.count.count }}
+              </span>
             </div>
           </div>
           <div v-else>
@@ -280,6 +283,7 @@ export default defineComponent({
     const { formRef, btnLoading, onSubmit } = useForm(async () => {
       const { msg } = await setPkUserRewarConfig(pkUserRewarConfig as any)
       ElMessage.success(msg)
+      visibleRef.value = false
     })
 
     const { userRewarTableForm } = useUserRewardTableForm(
