@@ -3,11 +3,10 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 16:18:22
+ * @LastEditTime: 2021-04-06 14:14:33
 -->
 <template>
   <div>
-    <div>段位：</div>
     <div class="ml-15 mb-15 text-12">
       <div class="form-item-tips">
         <i class="el-icon-info"></i>
@@ -126,19 +125,17 @@
             <el-button
               class="ml-15"
               type="danger"
-              icon="el-icon-minus"
               v-if="rankArr.length > 1"
               @click="splitRankArr(index)"
-              circle
-            ></el-button>
+              >删除</el-button
+            >
             <el-button
               class="ml-15"
               type="primary"
-              icon="el-icon-plus"
               v-if="index === rankArr.length - 1"
               @click="addRank"
-              circle
-            ></el-button>
+              >添加</el-button
+            >
           </el-form-item>
         </el-col>
       </el-row>
@@ -164,8 +161,8 @@ import { numberCheck } from '@/utils/check'
 
 const baseInfo: RankConfigInfo = {
   name: '',
-  under: '',
-  upper: '',
+  under: undefined,
+  upper: undefined,
   url: '',
 }
 

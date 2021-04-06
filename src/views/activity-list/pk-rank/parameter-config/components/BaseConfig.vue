@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-30 17:12:05
+ * @LastEditTime: 2021-04-06 14:09:46
 -->
 <template>
   <div style="">
@@ -95,19 +95,19 @@
           <el-button
             class="ml-15"
             type="danger"
-            icon="el-icon-minus"
             v-if="winningStreakList.length > 1"
             @click="delWinningStreak(index)"
-            circle
-          ></el-button>
+          >
+            删除
+          </el-button>
           <el-button
             class="ml-15"
             type="primary"
-            icon="el-icon-plus"
             v-if="winningStreakList.length === index + 1"
             @click="addWinningStreak"
-            circle
-          ></el-button>
+          >
+            添加
+          </el-button>
           <span class="form-item-tips">
             <i class="el-icon-info"></i>
             格式为：场次,额外增加的积分，场次：1-50正整数；积分：1-1000正整数，中间使用英文逗号隔开
@@ -142,19 +142,19 @@
           <el-button
             class="ml-15"
             type="danger"
-            icon="el-icon-minus"
             v-if="singleGameList.length > 1"
             @click="delSingleGame(index)"
-            circle
-          ></el-button>
+          >
+            删除
+          </el-button>
           <el-button
             class="ml-15"
             type="primary"
-            icon="el-icon-plus"
             v-if="singleGameList.length === index + 1"
             @click="addSingleGame"
-            circle
-          ></el-button>
+          >
+            添加
+          </el-button>
           <span class="form-item-tips">
             <i class="el-icon-info"></i>
             格式为：单场pk任意一方pk值,额外增加的积分，pk值：1-50000正整数；积分：1-1000正整数，中间使用英文逗号隔开

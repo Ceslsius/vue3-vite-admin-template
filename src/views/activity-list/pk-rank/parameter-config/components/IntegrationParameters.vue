@@ -3,10 +3,14 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-23 17:11:03
+ * @LastEditTime: 2021-04-06 14:16:10
 -->
 <template>
   <div>
+    <div class="form-item-tips">
+      <i class="el-icon-info mb-10"></i>
+      “+”或不填符号表示增加积分，“-”表示减少积分，“0”表示不增不减，积分1-1000正整数
+    </div>
     <el-form ref="formRef" :model="form" label-width="90px">
       <el-row v-for="(item, key) in form" :key="key">
         <el-col :span="6">
@@ -33,12 +37,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="18">
-          <div class="form-item-tips" v-if="key === 'same_win'">
-            <i class="el-icon-info"></i>
-            “+”或不填符号表示增加积分，“-”表示减少积分，“0”表示不增不减，积分1-1000正整数，下同
-          </div>
-        </el-col>
+        <el-col :span="18"> </el-col>
       </el-row>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>

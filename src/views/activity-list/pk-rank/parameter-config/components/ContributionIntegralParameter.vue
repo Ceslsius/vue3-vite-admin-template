@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 17:32:19
+ * @LastEditTime: 2021-04-06 14:12:26
 -->
 <template>
   <div>
@@ -101,19 +101,19 @@
             <el-button
               class="ml-15"
               type="danger"
-              icon="el-icon-minus"
-              circle
               v-if="form.special_gift.length > 1"
               @click="delList(index)"
-            ></el-button>
+            >
+              删除
+            </el-button>
             <el-button
               class="ml-15"
               type="primary"
-              icon="el-icon-plus"
               v-if="form.special_gift.length === index + 1"
-              circle
               @click="addList"
-            ></el-button>
+            >
+              添加
+            </el-button>
           </el-form-item>
         </el-col>
       </el-row>
