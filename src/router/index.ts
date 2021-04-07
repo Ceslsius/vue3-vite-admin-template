@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 15:54:53
+ * @LastEditTime: 2021-04-06 17:19:46
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -43,7 +43,6 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'pk-rank',
         component: () => import('@/views/activity-list/pk-rank/index.vue'),
-        name: 'test1',
         meta: {
           title: 'PK排位赛',
           affix: true,
@@ -82,6 +81,37 @@ const routes: RouteRecordRaw[] = [
             meta: {
               title: '活动数据',
               icon: 'el-icon-s-data',
+              affix: true,
+            },
+          },
+        ],
+      },
+      {
+        path: 'fans-group',
+        component: () => import('@/views/activity-list/fans-group/index.vue'),
+        meta: {
+          title: '圈粉时刻',
+          affix: true,
+        },
+        redirect: '/activity-list/fans-group/config',
+        children: [
+          {
+            path: 'base-config',
+            component: () =>
+              import('@/views/activity-list/fans-group/base-config/index.vue'),
+            meta: {
+              title: '参数配置',
+              icon: 'el-icon-s-tools',
+              affix: true,
+            },
+          },
+          {
+            path: 'data',
+            component: () =>
+              import('@/views/activity-list/fans-group/data/index.vue'),
+            meta: {
+              title: '活动数据',
+              icon: 'el-icon-s-tools',
               affix: true,
             },
           },
