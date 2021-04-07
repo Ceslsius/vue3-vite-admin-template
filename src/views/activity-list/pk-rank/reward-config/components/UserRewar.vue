@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-24 16:24:23
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-02 11:22:16
+ * @LastEditTime: 2021-04-07 13:15:58
 -->
 <template>
   <div>
@@ -160,7 +160,7 @@
               <el-select
                 style="width: 100%"
                 v-model="form.gift.id"
-                @change="changeGift(lebelKey)"
+                @change="changeGift()"
                 placeholder="请选择礼物"
               >
                 <el-option
@@ -296,10 +296,10 @@ export default defineComponent({
       pkUserRewarConfig as any
     )
 
-    function changeGift(key: string) {
+    function changeGift() {
       if (!form.gift) return
       const temp = giftList.value.find((item) => {
-        return item.id === pkUserRewarConfig[key].gift.id
+        return item.id === form.gift?.id
       })
       form.gift.giftname = temp?.giftname
       form.gift.url = temp?.url
