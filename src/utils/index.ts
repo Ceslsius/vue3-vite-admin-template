@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-19 17:43:54
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:47:38
+ * @LastEditTime: 2021-04-07 15:57:40
  */
 
 import { TakStorage } from './storage'
@@ -48,4 +48,17 @@ export function dateFormat(fmt: string, date: Date) {
     }
   }
   return fmt
+}
+
+export function jsonClone<T>(data: T): T {
+  return JSON.parse(JSON.stringify(data))
+}
+
+export function setKeysMap<T, D>(keys: T, data: D) {
+  let tempKeys = (Array.isArray(keys) ? keys : Object.keys(keys)) as (keyof T)[]
+  const tempMap = {} as Record<keyof T, D>
+  tempKeys.forEach((item) => {
+    tempMap[item] = jsonClone(data)
+  })
+  return tempMap
 }

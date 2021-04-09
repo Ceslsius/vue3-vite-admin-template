@@ -3,12 +3,12 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:32:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-07 12:12:15
+ * @LastEditTime: 2021-04-07 15:32:35
  */
-interface BaseConfigData {
+export interface BaseConfigData {
   fan_mission: FanMissionInfo[]
 }
-interface FanMissionInfo {
+export interface FanMissionInfo {
   /**
    * 数量
    */
@@ -47,5 +47,26 @@ interface FanMissionInfo {
      * 时长
      */
     time?: number
+  }
+}
+
+export type AnchorRewardConfigKey =
+  | 'first'
+  | 'second'
+  | 'three'
+  | 'four'
+  | 'five'
+
+export type AnchorRewardConfig = Record<
+  AnchorRewardConfigKey,
+  AnchorRewardConfigInfo
+>
+
+export interface AnchorRewardConfigInfo {
+  coin?: number
+  live_lable: {
+    url: string
+    time?: number
+    name: string
   }
 }

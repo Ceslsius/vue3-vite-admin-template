@@ -3,9 +3,9 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-15 14:27:19
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-24 10:26:19
+ * @LastEditTime: 2021-04-08 10:34:32
  */
-export interface ActivityAddData {
+interface ActivityAddData {
   /**
    * 活动名称
    */

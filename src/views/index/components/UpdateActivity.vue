@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-25 14:18:58
+ * @LastEditTime: 2021-04-09 14:20:25
 -->
 <template>
   <el-dialog title="修改活动信息" v-model="addActivityVisible">
@@ -55,7 +55,13 @@
           placeholder="请选择"
           style="width: 100%"
         >
-          <el-option label="PK排位赛" value="pk_rank"> </el-option>
+          <el-option
+            v-for="(item, index) in activityTypeList"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -76,12 +82,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, nextTick, PropType, toRef } from 'vue'
-import { addActivity, updateActivity } from '../api'
-import type { ActivityAddData, ActivityInfo } from '../interface'
+import { updateActivity } from '../api'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
 import { numberCheck } from '@/utils/check'
 import dayjs from 'dayjs'
+import { activityTypeList } from '@/record/activityTypeList'
 
 export default defineComponent({
   name: 'AddActivity',
@@ -121,7 +127,7 @@ export default defineComponent({
   },
   props: {
     info: {
-      type: Object as PropType<ActivityInfo>,
+      type: Object as PropType<Partial<ActivityInfo>>,
       default: () => {
         return {}
       },
@@ -192,6 +198,7 @@ export default defineComponent({
       open,
       close,
       dateCheck,
+      activityTypeList,
     }
   },
 })

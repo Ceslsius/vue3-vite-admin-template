@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:12:42
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-06 17:27:10
+ * @LastEditTime: 2021-04-08 10:37:16
 -->
 <template>
   <el-tabs v-model="activeName">
@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import PowderRising from './componens/PowderRising.vue'
-import RewardConfig from './componens/RewardConfig.vue'
+import PowderRising from './components/PowderRising.vue'
+import RewardConfig from './components/RewardConfig.vue'
 export default defineComponent({
   name: '',
   components: {

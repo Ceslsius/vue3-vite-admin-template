@@ -1,10 +1,11 @@
 <!--
  * @Descripttion: 
  * @Author: Yi Yunwan
- * @Date: 2021-03-11 20:33:32
+ * @Date: 2021-04-02 10:13:56
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 10:53:00
+ * @LastEditTime: 2021-04-08 10:34:52
 -->
+
 <template>
   <el-form :inline="true" ref="formRef" class="demo-form-inline">
     <el-row type="flex" justify="space-between">
@@ -92,7 +93,6 @@ import { useTable } from '@/use/useTable'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { getActivityList } from './api'
 import { activityTypeList } from '@/record/activityTypeList'
-import type { ActivityInfo } from './interface'
 import AddActivity from './components/AddActivity.vue'
 import UpdateActivity from './components/UpdateActivity.vue'
 

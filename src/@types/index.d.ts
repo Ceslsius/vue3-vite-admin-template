@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2020-12-02 18:04:32
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-16 17:04:35
+ * @LastEditTime: 2021-04-08 10:57:31
  */
 interface CusResponse<T = any> {
   code: string
@@ -20,4 +20,10 @@ type ListRes<T = any> = Res<{
 interface BasePageParams {
   page_size: number
   page: number
+}
+
+interface BaseTableSearchParams {
+  keyword: string
+  start_time?: number
+  end_time?: number
 }

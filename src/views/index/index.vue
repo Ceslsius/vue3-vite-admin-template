@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 09:55:12
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-19 15:00:15
+ * @LastEditTime: 2021-04-08 10:59:04
 -->
 <template>
   <div style="width: 40%; min-width: 400px">
@@ -58,7 +58,6 @@
 import { ElFormItemContext } from 'element-plus/lib/el-form'
 import { defineComponent, reactive, ref } from 'vue'
 import { addActivity } from './api'
-import type { ActivityAddData } from './interface'
 import { useForm } from '@/use/useForm'
 import { ElMessage } from 'element-plus'
 
