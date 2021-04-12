@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 16:21:05
+ * @LastEditTime: 2021-04-12 17:11:01
 -->
 <template>
   <el-form
@@ -45,18 +45,6 @@
         <el-row v-if="item.live_label">
           <el-col :span="8">
             <el-form-item
-              label="直播标签"
-              :prop="`${key}.live_label.url`"
-              :rules="{
-                required: true,
-                message: '请上传直播标签',
-              }"
-            >
-              <ImageUpload v-model:url="item.live_label.url"> </ImageUpload>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item
               label="使用天数"
               :prop="`${key}.live_label.time`"
               :rules="{
@@ -88,6 +76,18 @@
                 clearable
               >
               </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item
+              label="直播标签"
+              :prop="`${key}.live_label.url`"
+              :rules="{
+                required: true,
+                message: '请上传直播标签',
+              }"
+            >
+              <ImageUpload v-model:url="item.live_label.url"> </ImageUpload>
             </el-form-item>
           </el-col>
         </el-row>
