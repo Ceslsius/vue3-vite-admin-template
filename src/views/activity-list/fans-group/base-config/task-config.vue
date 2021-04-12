@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 16:20:51
+ * @LastEditTime: 2021-04-12 17:20:34
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -187,9 +187,9 @@ import { useForm } from '@/use/useForm'
 import { jsonClone } from '@/utils'
 import { ElMessage } from 'element-plus'
 import { defineComponent, reactive } from 'vue'
-import { setBaseConfig } from '../api'
-import { FanMissionInfo } from '../inerface'
-import { useFansConfig } from '../use'
+import { setBaseConfig } from './api'
+import { FanMissionInfo } from './inerface'
+import { useFansConfig } from './use'
 
 export default defineComponent({
   name: 'PowderRising',

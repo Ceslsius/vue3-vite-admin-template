@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 17:11:01
+ * @LastEditTime: 2021-04-12 17:21:49
 -->
 <template>
   <el-form
@@ -108,11 +108,11 @@ import {
   AnchorRewardConfig,
   AnchorRewardConfigInfo,
   AnchorRewardConfigKey,
-} from '../inerface'
+} from './inerface'
 import { useForm } from '@/use/useForm'
-import { setAnchorRewardConfig } from '../api'
+import { setAnchorRewardConfig } from './api'
 import { ElMessage } from 'element-plus'
-import { useFansConfig } from '../use'
+import { useFansConfig } from './use'
 
 function useAnchorRewardConfig() {
   const anchorRewardConfigKeyMap: Record<AnchorRewardConfigKey, string> = {

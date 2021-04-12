@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-08 10:49:00
+ * @LastEditTime: 2021-04-12 17:22:55
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -96,11 +96,25 @@ const routes: RouteRecordRaw[] = [
         redirect: '/activity-list/fans-group/config',
         children: [
           {
-            path: 'base-config',
+            path: 'task-config',
             component: () =>
-              import('@/views/activity-list/fans-group/base-config/index.vue'),
+              import(
+                '@/views/activity-list/fans-group/base-config/task-config.vue'
+              ),
             meta: {
-              title: '参数配置',
+              title: '涨粉任务',
+              icon: 'el-icon-s-tools',
+              affix: true,
+            },
+          },
+          {
+            path: 'reward-config',
+            component: () =>
+              import(
+                '@/views/activity-list/fans-group/base-config/reward-config.vue'
+              ),
+            meta: {
+              title: '奖励配置',
               icon: 'el-icon-s-tools',
               affix: true,
             },
