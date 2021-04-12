@@ -3,10 +3,11 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:32:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-07 15:32:35
+ * @LastEditTime: 2021-04-12 11:39:32
  */
 export interface BaseConfigData {
   fan_mission: FanMissionInfo[]
+  act_type: string
 }
 export interface FanMissionInfo {
   /**
@@ -64,7 +65,7 @@ export type AnchorRewardConfig = Record<
 
 export interface AnchorRewardConfigInfo {
   coin?: number
-  live_lable: {
+  live_label: {
     url: string
     time?: number
     name: string

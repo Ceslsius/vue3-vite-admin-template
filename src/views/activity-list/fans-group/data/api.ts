@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-08 10:53:40
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-09 11:40:10
+ * @LastEditTime: 2021-04-12 10:06:38
  */
 
 import { service } from '@/utils/http'
@@ -11,13 +11,13 @@ import { service } from '@/utils/http'
 export function getFanScoreList(
   params: BasePageParams & BaseTableSearchParams
 ): ListRes<FanScoreInfo> {
-  return service.get('/ring/fan/score/list', {
+  return service.get('/backend/ring/fan/score/list', {
     params,
   })
 }
 
 export function exportFanScoreList(params: BaseTableSearchParams) {
-  return service.get('/ring/fan/score/export', {
+  return service.get('/backend/ring/fan/score/export', {
     params,
     responseType: 'blob',
   })
@@ -33,7 +33,7 @@ export function getGiftList(
       uid: number
     }
 ): ListRes {
-  return service.get('/ring/fan/gift/list', {
+  return service.get('/backend/ring/fan/gift/list', {
     params,
   })
 }
@@ -47,7 +47,7 @@ export function exportGiftList(
     uid: number
   }
 ) {
-  return service.get('/ring/fan/gift/export', {
+  return service.get('/backendring/fan/gift/export', {
     params,
     responseType: 'blob',
   })
@@ -56,13 +56,13 @@ export function exportGiftList(
 export function getTaskList(
   params: BasePageParams & BaseTableSearchParams
 ): ListRes<TaskListInfo> {
-  return service.get('/ring/fan/task/list', {
+  return service.get('/backend/ring/fan/task/list', {
     params,
   })
 }
 
 export function exportTaskList(params: BaseTableSearchParams) {
-  return service.get('/ring/fan/task/export', {
+  return service.get('/backend/ring/fan/task/export', {
     params,
     responseType: 'blob',
   })
@@ -75,7 +75,7 @@ export function getFansList(
       uid: string
     }
 ): ListRes<TaskListInfo> {
-  return service.get('/ring/fan/fans/list', { params })
+  return service.get('/backend/ring/fan/fans/list', { params })
 }
 
 export function exportFansList(
@@ -84,7 +84,7 @@ export function exportFansList(
     uid: string
   }
 ): ListRes<TaskListInfo> {
-  return service.get('/ring/fan/fans/export', {
+  return service.get('/backend/ring/fan/fans/export', {
     params,
     responseType: 'blob',
   })

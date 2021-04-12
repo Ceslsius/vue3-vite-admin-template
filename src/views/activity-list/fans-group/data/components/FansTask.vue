@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-08 10:46:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-09 14:14:27
+ * @LastEditTime: 2021-04-12 14:46:26
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -91,7 +91,7 @@
     :title="`主播${fansTaskInfo.username}榜单礼物明细`"
     v-model="infoDialogVisible"
     :destroy-on-close="true"
-    width="60%"
+    width="70%"
     top="5vh"
   >
     <FansTaskInfo :info="fansTaskInfo" />

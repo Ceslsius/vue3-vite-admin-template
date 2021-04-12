@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-07 15:18:23
+ * @LastEditTime: 2021-04-12 14:16:04
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -114,11 +114,16 @@
             <el-form-item
               label="头像框名称"
               :prop="`[${index}].avatar.name`"
-              :rules="{
-                required:
-                  item.avatar.name || item.avatar.url || item.avatar.time,
-                message: '请输入头像框名称',
-              }"
+              :rules="[
+                {
+                  required:
+                    item.avatar.name ||
+                    item.avatar.url ||
+                    item.avatar.time ||
+                    !item.coin,
+                  message: '请输入头像框名称',
+                },
+              ]"
             >
               <el-input
                 v-model="item.avatar.name"
@@ -178,10 +183,12 @@
 import ImageUpload from '@/components/ImageUpload/ImageUpload.vue'
 import { useDynamicForm } from '@/use/useDynamicForm'
 import { useForm } from '@/use/useForm'
+import { jsonClone } from '@/utils'
 import { ElMessage } from 'element-plus'
 import { defineComponent, reactive } from 'vue'
 import { setBaseConfig } from '../api'
 import { FanMissionInfo } from '../inerface'
+import { useFansConfig } from '../use'
 
 export default defineComponent({
   name: 'PowderRising',
@@ -198,10 +205,15 @@ export default defineComponent({
         name: '',
       },
     })
-
+    function assignData() {
+      fanMission.length && Object.assign(list, jsonClone(fanMission))
+    }
+    const { fanMission } = useFansConfig(assignData)
+    assignData()
     const { btnLoading, onSubmit, formRef } = useForm(async () => {
       const { msg } = await setBaseConfig({
         fan_mission: list,
+        act_type: 'ring_fan',
       })
       ElMessage.success(msg)
     })

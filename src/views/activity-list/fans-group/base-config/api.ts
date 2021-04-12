@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:31:09
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-07 15:14:26
+ * @LastEditTime: 2021-04-12 11:48:23
  */
 
 import { service } from '@/utils/http'
@@ -19,6 +19,21 @@ export function setBaseConfig(data: BaseConfigData): Res {
 /**
  * 主播排行奖励配置
  */
-export function setAnchorRewardConfig(data: AnchorRewardConfig): Res {
+export function setAnchorRewardConfig(
+  data: AnchorRewardConfig & {
+    act_type: string
+  }
+): Res {
   return service.post('/backend/anchor/reward/config', data)
+}
+
+/**
+ * 获取配置
+ */
+export function getActivityRule(act_type = 'ring_fan'): Res {
+  return service.get('/activity/rule', {
+    params: {
+      act_type,
+    },
+  })
 }

@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-17 14:12:44
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-17 14:39:29
+ * @LastEditTime: 2021-04-12 11:38:03
 -->
 <template>
   <el-upload
@@ -55,9 +55,11 @@ export default defineComponent({
   setup(props, content) {
     const { loading, beforeUpload } = useUploadFile((value) => {
       content.emit('update:url', value)
+      content.emit('change', value)
     })
     function delImage() {
       content.emit('update:url', '')
+      content.emit('change', '')
     }
     return {
       loading,
