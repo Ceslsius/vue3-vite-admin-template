@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:50
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 14:24:30
+ * @LastEditTime: 2021-04-12 16:21:05
 -->
 <template>
   <el-form
@@ -69,6 +69,7 @@
                 placeholder="请输入使用天数"
                 clearable
               >
+                <template #append>天</template>
               </el-input>
             </el-form-item>
           </el-col>

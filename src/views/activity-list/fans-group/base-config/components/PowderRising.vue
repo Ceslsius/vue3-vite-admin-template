@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 14:16:04
+ * @LastEditTime: 2021-04-12 16:20:51
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -15,11 +15,7 @@
       class="border p-10 radius mb-15"
     >
       <el-col class="text-bold pb-10 mb-15 border-bottom">
-        涨粉配置{{ index + 1 }}：
-        <span class="form-item-tips">
-          <i class="el-icon-info"></i>
-          头像框和热度奖励二选一，当选择热度值时，钻石数必填
-        </span>
+        涨粉任务{{ index + 1 }}：
       </el-col>
       <el-col :span="22">
         <el-row type="flex">
@@ -40,7 +36,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" v-if="index !== 0">
           <el-col :span="9">
             <el-form-item
               label="赠送钻石数"
@@ -60,7 +56,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row type="flex" v-if="index !== 0">
           <el-col :span="9">
             <el-form-item
               label="热度值"
@@ -75,24 +71,27 @@
                 v-model.number="item.hot_rec.value"
                 placeholder="请输入热度值"
                 clearable
-              ></el-input>
+              >
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="9">
             <el-form-item
-              label="时长"
+              label="使用天数"
               :prop="`[${index}].hot_rec.time`"
               :rules="{
                 required:
                   item.hot_rec.value || item.hot_rec.url || item.hot_rec.time,
-                message: '请输入时长',
+                message: '请输入使用天数',
               }"
             >
               <el-input
                 v-model.number="item.hot_rec.time"
-                placeholder="请输入时长"
+                placeholder="请输入使用天数"
                 clearable
-              ></el-input>
+              >
+                <template #append>天</template>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -109,7 +108,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" v-if="index === 0">
           <el-col :span="9">
             <el-form-item
               label="头像框名称"
@@ -134,19 +133,21 @@
           </el-col>
           <el-col :span="9">
             <el-form-item
-              label="使用时长"
+              label="使用天数"
               :prop="`[${index}].avatar.time`"
               :rules="{
                 required:
                   item.avatar.name || item.avatar.url || item.avatar.time,
-                message: '请输入使用时长',
+                message: '请输入使用天数',
               }"
             >
               <el-input
                 v-model.number="item.avatar.time"
                 placeholder="请输入使用时长"
                 clearable
-              ></el-input>
+              >
+                <template #append>天</template>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -164,7 +165,7 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-col :span="2">
+      <!-- <el-col :span="2">
         <el-row>
           <el-col v-if="list.length > 1">
             <el-button type="danger" @click="delList(index)"> 删除 </el-button>
@@ -173,7 +174,7 @@
             <el-button type="primary" @click="addList"> 增加 </el-button>
           </el-col>
         </el-row>
-      </el-col>
+      </el-col> -->
     </el-row>
     <el-button type="primary" @click="onSubmit">保存</el-button>
   </el-form>
