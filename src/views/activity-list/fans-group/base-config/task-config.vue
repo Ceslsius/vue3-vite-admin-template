@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 17:20:34
+ * @LastEditTime: 2021-04-14 17:46:28
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -197,15 +197,20 @@ export default defineComponent({
     ImageUpload,
   },
   setup() {
-    const { list, addList, delList } = useDynamicForm<FanMissionInfo>({
-      hot_rec: {
-        url: '',
+    const { list, addList, delList } = useDynamicForm<FanMissionInfo>(
+      {
+        hot_rec: {
+          url: '',
+        },
+        avatar: {
+          url: '',
+          name: '',
+        },
       },
-      avatar: {
-        url: '',
-        name: '',
-      },
-    })
+      {
+        min: 4,
+      }
+    )
     function assignData() {
       fanMission.length && Object.assign(list, jsonClone(fanMission))
     }
