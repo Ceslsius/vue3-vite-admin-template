@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-14 17:46:28
+ * @LastEditTime: 2021-04-14 20:28:17
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -36,7 +36,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" v-if="index !== 0">
+        <el-row type="flex">
           <el-col :span="9">
             <el-form-item
               label="赠送钻石数"
@@ -56,7 +56,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex" v-if="index !== 0">
+        <el-row type="flex">
           <el-col :span="9">
             <el-form-item
               label="热度值"
@@ -108,7 +108,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex" v-if="index === 0">
+        <el-row type="flex">
           <el-col :span="9">
             <el-form-item
               label="头像框名称"
