@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-08 10:53:40
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-12 10:06:38
+ * @LastEditTime: 2021-04-14 12:13:31
  */
 
 import { service } from '@/utils/http'
@@ -38,16 +38,13 @@ export function getGiftList(
   })
 }
 
-/**
- * /ring/fan/gift/export
- */
 export function exportGiftList(
   params: BaseTableSearchParams & {
     code: string
     uid: number
   }
 ) {
-  return service.get('/backendring/fan/gift/export', {
+  return service.get('/backend/ring/fan/gift/export', {
     params,
     responseType: 'blob',
   })
