@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-15 09:34:48
+ * @LastEditTime: 2021-04-15 09:58:32
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -18,7 +18,7 @@
         涨粉任务{{ index + 1 }}：
       </el-col>
       <el-col :span="22">
-        <el-row type="flex" v-if="index !== 0">
+        <el-row type="flex">
           <el-col :span="9">
             <el-form-item
               label="涨粉数量"
@@ -56,7 +56,7 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex">
+        <el-row type="flex" v-if="index !== 0">
           <el-col :span="9">
             <el-form-item
               label="热度值"
