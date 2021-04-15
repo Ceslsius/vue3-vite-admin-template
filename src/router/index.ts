@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-14 20:30:33
+ * @LastEditTime: 2021-04-15 09:31:32
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -117,7 +117,6 @@ const routes: RouteRecordRaw[] = [
               title: '奖励配置',
               icon: 'el-icon-s-tools',
               affix: true,
-              hidden: true,
             },
           },
           {

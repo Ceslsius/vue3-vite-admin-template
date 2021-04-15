@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-06 17:26:25
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-14 20:28:17
+ * @LastEditTime: 2021-04-15 09:34:48
 -->
 <template>
   <el-form :model="list" ref="formRef" size="mini" label-width="100px">
@@ -18,7 +18,7 @@
         涨粉任务{{ index + 1 }}：
       </el-col>
       <el-col :span="22">
-        <el-row type="flex">
+        <el-row type="flex" v-if="index !== 0">
           <el-col :span="9">
             <el-form-item
               label="涨粉数量"
@@ -36,7 +36,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" v-if="index !== 0">
           <el-col :span="9">
             <el-form-item
               label="赠送钻石数"
@@ -108,7 +108,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" v-if="index === 0">
           <el-col :span="9">
             <el-form-item
               label="头像框名称"
@@ -199,12 +199,17 @@ export default defineComponent({
   setup() {
     const { list, addList, delList } = useDynamicForm<FanMissionInfo>(
       {
+        num: 0,
+        coin: 0,
         hot_rec: {
           url: '',
+          time: 0,
+          value: 0,
         },
         avatar: {
           url: '',
           name: '',
+          time: 0,
         },
       },
       {
