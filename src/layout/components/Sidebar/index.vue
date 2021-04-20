@@ -2,8 +2,8 @@
  * @Descripttion: 
  * @Author: Yi Yunwan
  * @Date: 2021-03-11 11:42:34
- * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-29 17:03:24
+ * @LastEditors: weilkss
+ * @LastEditTime: 2021-04-15 16:13:30
 -->
 <template>
   <div>
@@ -14,6 +14,7 @@
       background-color="#2b303b"
       text-color="#fff"
       active-text-color="#1890ff"
+      :default-active="defaultActive"
     >
       <SidebarItem
         v-for="(route, index) in routes"
@@ -28,7 +29,7 @@
 
 <script lang="ts">
 import { useSidebar } from '@/use/useSidebar'
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { RouteRecordRaw, useRouter } from 'vue-router'
 import SidebarItem from './SidebarItem.vue'
 import SidebarLogo from './SidebarLogo.vue'
@@ -44,11 +45,13 @@ export default defineComponent({
     const routes = computed<RouteRecordRaw[]>(() => {
       return router.options.routes
     })
+    const defaultActive = ref<string>(router.currentRoute.value.path)
     const { isCollapse } = useSidebar()
 
     return {
       routes,
       isCollapse,
+      defaultActive,
     }
   },
 })

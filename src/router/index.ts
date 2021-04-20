@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: Yi Yunwan
  * @Date: 2021-03-10 18:11:11
- * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-15 09:31:32
+ * @LastEditors: weilkss
+ * @LastEditTime: 2021-04-15 15:17:37
  */
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Login from '@/views/login/index.vue'
@@ -130,6 +130,14 @@ const routes: RouteRecordRaw[] = [
             },
           },
         ],
+      },
+      {
+        path: 'spring-head',
+        component: () => import('@/views/activity-list/spring-head/index.vue'),
+        meta: {
+          title: '春季抢头条',
+          affix: true,
+        },
       },
     ],
     meta: {
