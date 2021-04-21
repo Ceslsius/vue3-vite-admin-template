@@ -1,9 +1,9 @@
 <!--
- * @Descripttion: name
- * @Author: weilkss
- * @Date: 2021-04-15 15:28:19
+ * @Descripttion: 
+ * @Author: Yi Yunwan
+ * @Date: 2021-04-21 12:21:18
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-21 12:04:51
+ * @LastEditTime: 2021-04-21 12:33:09
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -73,12 +73,26 @@
 import { useDaterange } from '@/use/useDaterange'
 import { useForm } from '@/use/useForm'
 import { useTable } from '@/use/useTable'
-import { defineComponent, reactive } from 'vue'
-import { getHourRankList, exportHourRankList } from '../api'
+import { defineComponent, PropType, reactive } from 'vue'
+import { getStarRecordList, exportStarRecordList } from '../api'
 export default defineComponent({
-  setup() {
-    const form = reactive<BaseTableSearchParams>({
+  name: 'StarInfo',
+  props: {
+    info: {
+      required: true,
+      type: Object as PropType<HeadlinesRankListInfo>,
+    },
+  },
+  setup(props) {
+    const form = reactive<
+      BaseTableSearchParams & {
+        code: string
+        liveuid: string
+      }
+    >({
       keyword: '',
+      code: props.info.code,
+      liveuid: props.info.liveuid,
     })
 
     const {
@@ -89,9 +103,9 @@ export default defineComponent({
       total,
       sizeChange,
       exportExcel,
-    } = useTable(form, getHourRankList, {
-      exportExcelFunc: exportHourRankList,
-      exportExcelName: '星星榜单记录',
+    } = useTable(form, getStarRecordList, {
+      exportExcelFunc: exportStarRecordList,
+      exportExcelName: `主播${props.info.username}榜单礼物明细`,
     })
 
     const { timeValue } = useDaterange(form)

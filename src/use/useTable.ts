@@ -3,20 +3,20 @@
  * @Author: Yi Yunwan
  * @Date: 2021-03-16 16:29:08
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-03-26 10:40:54
+ * @LastEditTime: 2021-04-21 14:30:20
  */
 
 import { downLoadXlsx } from '@/utils'
-import { isRef, onMounted, reactive, ref } from 'vue'
+import { isRef, onMounted, reactive, Ref, ref, unref } from 'vue'
 
-export function useTable<T, L>(
-  form: T,
+export function useTable<T extends object, L>(
+  form: T | Ref<T>,
   service: (params: T & BasePageParams) => ListRes<L>,
   options?: {
     page_size?: 100
     page?: 1
     exportExcelFunc?: (params: T) => Promise<any>
-    exportExcelName?: string
+    exportExcelName?: string | Ref<string>
   }
 ) {
   const pageParams = reactive<BasePageParams>({
@@ -54,7 +54,7 @@ export function useTable<T, L>(
       }
       const data = await options.exportExcelFunc(temp)
       if (data instanceof Blob) {
-        downLoadXlsx(data, options.exportExcelName)
+        downLoadXlsx(data, unref(options.exportExcelName))
       }
     }
   }
