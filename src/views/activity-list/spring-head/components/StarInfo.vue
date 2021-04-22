@@ -3,7 +3,7 @@
  * @Author: Yi Yunwan
  * @Date: 2021-04-21 12:21:18
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-21 12:33:09
+ * @LastEditTime: 2021-04-21 16:31:58
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -42,13 +42,16 @@
       height="70vh"
       style="width: 100%"
     >
-      <el-table-column prop="rank_time" label="榜单开始时间" align="center">
+      <el-table-column prop="id" label="	序号" align="center"> </el-table-column>
+      <el-table-column prop="get_type" label="获得方式" align="center">
       </el-table-column>
-      <el-table-column prop="liveuid" label="NO.1用户" align="center">
+      <el-table-column prop="param_one" label="参数一" align="center">
       </el-table-column>
-      <el-table-column prop="income" label="NO.1收益" align="center">
+      <el-table-column prop="param_two" label="参数二" align="center">
       </el-table-column>
-      <el-table-column prop="is_send" label="是否发放星星" align="center">
+      <el-table-column prop="param_three" label="参数三" align="center">
+      </el-table-column>
+      <el-table-column prop="created_at" label="获得时间" align="center">
       </el-table-column>
     </el-table>
     <el-row type="flex" justify="end">

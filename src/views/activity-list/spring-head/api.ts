@@ -3,7 +3,7 @@
  * @Author: weilkss
  * @Date: 2021-04-15 15:37:30
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-21 12:32:37
+ * @LastEditTime: 2021-04-21 16:34:44
  */
 import { service } from '@/utils/http'
 
@@ -56,7 +56,7 @@ export function getStarRecordList(
       liveuid: string
     }
 ): ListRes {
-  return service.get('/backend/grab/headlines/rank/list', {
+  return service.get('/backend/grab/headlines/star/record/list', {
     params,
   })
 }
@@ -67,7 +67,7 @@ export function exportStarRecordList(
     liveuid: string
   }
 ) {
-  return service.get('/backend/grab/headlines/rank/export', {
+  return service.get('/backend/grab/headlines/star/record/export', {
     params,
     responseType: 'blob',
   })
