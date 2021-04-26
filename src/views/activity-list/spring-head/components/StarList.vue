@@ -3,7 +3,7 @@
  * @Author: weilkss
  * @Date: 2021-04-15 15:28:19
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-21 12:22:50
+ * @LastEditTime: 2021-04-26 11:32:33
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -51,11 +51,6 @@
     <el-table-column prop="username" label="主播昵称" align="center">
     </el-table-column>
     <el-table-column prop="anchor_type" label="主播类型" align="center">
-      <template #default="scope">
-        <div>
-          {{ anchorTypeMap[scope.row.anchor_type] }}
-        </div>
-      </template>
     </el-table-column>
     <el-table-column prop="total_star" label="星星总数" align="center">
     </el-table-column>

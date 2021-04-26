@@ -3,7 +3,7 @@
  * @Author: weilkss
  * @Date: 2021-04-15 15:28:19
  * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-21 12:04:51
+ * @LastEditTime: 2021-04-26 11:40:22
 -->
 <template>
   <el-form :inline="true" class="demo-form-inline">
@@ -49,6 +49,11 @@
       <el-table-column prop="income" label="NO.1收益" align="center">
       </el-table-column>
       <el-table-column prop="is_send" label="是否发放星星" align="center">
+        <template #default="scope">
+          <div>
+            {{ Number(scope.row.is_send) ? '发放' : '已达上限不发放' }}
+          </div>
+        </template>
       </el-table-column>
     </el-table>
     <el-row type="flex" justify="end">
