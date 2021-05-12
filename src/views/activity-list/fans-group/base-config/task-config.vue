@@ -1,8 +1,8 @@
 <!--
  * @Descripttion: 涨粉配置
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2021-04-06 17:26:25
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-04-15 09:58:32
 -->
 <template>

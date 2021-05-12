@@ -1,8 +1,8 @@
 /*
  * @Descripttion:
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2020-12-02 18:04:32
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-04-08 10:57:31
  */
 interface CusResponse<T = any> {

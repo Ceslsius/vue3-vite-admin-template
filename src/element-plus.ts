@@ -1,8 +1,8 @@
 /*
  * @Descripttion:
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2021-03-10 12:09:12
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-03-10 18:29:03
  */
 import { App } from 'vue'

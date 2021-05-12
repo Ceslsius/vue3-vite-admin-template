@@ -1,8 +1,8 @@
 /*
  * @Descripttion:
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2021-04-06 17:32:50
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-04-12 11:39:32
  */
 export interface BaseConfigData {

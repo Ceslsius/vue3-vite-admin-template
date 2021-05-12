@@ -1,8 +1,8 @@
 /*
  * @Descripttion:
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2021-03-15 15:27:44
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-04-06 14:11:40
  */
 export interface PkBaseCofigData {

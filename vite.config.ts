@@ -1,9 +1,9 @@
 /*
- * @Descripttion:
- * @Author: Yi Yunwan
- * @Date: 2021-03-10 11:28:58
- * @LastEditors: Yi Yunwan
- * @LastEditTime: 2021-04-14 17:46:37
+ * @Descripttion: 
+ * @Author: Zhang Yunzhong
+ * @Date: 2021-05-12 10:24:40
+ * @LastEditors: Zhang Yunzhong
+ * @LastEditTime: 2021-05-12 10:29:44
  */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -22,8 +22,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/public/js': 'http://webtest.taktak.tv',
-      // '/public/js': 'http://webdev.taktak.tv',
+      '/public/js': 'http://123.com',
     },
   },
   resolve: {

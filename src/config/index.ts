@@ -1,8 +1,8 @@
 /*
  * @Descripttion:
- * @Author: Yi Yunwan
+ * @Author: Zhang Yunzhong
  * @Date: 2020-09-04 15:11:01
- * @LastEditors: Yi Yunwan
+ * @LastEditors: Zhang Yunzhong
  * @LastEditTime: 2021-03-15 15:07:04
  */
 export const baseURL = window.globalTakTakConfig.baseURL
